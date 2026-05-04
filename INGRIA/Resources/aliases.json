@@ -1,0 +1,2761 @@
+{
+  "1_4_dioxane_risk_ingredients": [
+    "1,4-dioxane risk ingredients",
+    "fragrance",
+    "Parfum",
+    "Duftstoff",
+    "Duftstoffe",
+    "Aroma"
+  ],
+  "a2_dairy": [
+    "A2 dairy",
+    "gum"
+  ],
+  "acacia_fiber": [
+    "Acacia fiber",
+    "Akazienfaser",
+    "fiber"
+  ],
+  "acesulfame_potassium": [
+    "Acesulfame potassium",
+    "Acesulfam-K",
+    "artificial_sweetener"
+  ],
+  "acesulfame_potassium_ace_k": [
+    "Acesulfame potassium / Ace-K",
+    "Acesulfam-K / E950",
+    "artificial_sweetener"
+  ],
+  "acetic_acid": [
+    "Acetic acid",
+    "Essigsäure",
+    "acid"
+  ],
+  "acrylates_copolymer": [
+    "Acrylates copolymer",
+    "Acrylate Copolymer",
+    "microplastic"
+  ],
+  "activated_charcoal": [
+    "Activated charcoal",
+    "Aktivkohle",
+    "mineral"
+  ],
+  "advantame": [
+    "Advantame",
+    "Advantam / E969",
+    "artificial_sweetener"
+  ],
+  "agar_agar": [
+    "Agar agar",
+    "Agar-Agar",
+    "gum"
+  ],
+  "agave_syrup": [
+    "Agave syrup",
+    "Agavendicksaft",
+    "sugar",
+    "Agavensirup"
+  ],
+  "alcohol_denat": [
+    "Alcohol denat.",
+    "denaturierter Alkohol",
+    "alcohol"
+  ],
+  "allantoin": [
+    "Allantoin",
+    "active"
+  ],
+  "allulose": [
+    "Allulose",
+    "sweeteners"
+  ],
+  "almond_flour": [
+    "Almond flour",
+    "Mandelmehl",
+    "flour"
+  ],
+  "almonds": [
+    "Almonds",
+    "Mandeln",
+    "whole_food"
+  ],
+  "aloe_vera": [
+    "Aloe vera",
+    "Aloe Vera",
+    "botanical"
+  ],
+  "aluminum_based_leavening": [
+    "Aluminum-based leavening",
+    "preservative"
+  ],
+  "aluminum_lake_dyes": [
+    "Aluminum lake dyes",
+    "Aluminiumlack-Farbstoffe",
+    "artificial_color"
+  ],
+  "aluminum_sodium_phosphate": [
+    "Aluminum sodium phosphate",
+    "preservative"
+  ],
+  "aluminum_sulfate": [
+    "Aluminum sulfate",
+    "Aluminiumsulfat",
+    "additive"
+  ],
+  "ammonia": [
+    "Ammonia",
+    "fragrance",
+    "Parfum",
+    "Duftstoff",
+    "Duftstoffe",
+    "Aroma"
+  ],
+  "ammonium_lauryl_sulfate": [
+    "Ammonium lauryl sulfate",
+    "Ammoniumlaurylsulfat",
+    "surfactant",
+    "SLS",
+    "SLES",
+    "Natriumlaurylsulfat",
+    "Natriumlaurethsulfat"
+  ],
+  "ammonium_phosphate": [
+    "Ammonium phosphate",
+    "Ammoniumphosphat",
+    "phosphate"
+  ],
+  "amodimethicone": [
+    "Amodimethicone",
+    "Amodimethicon",
+    "silicone"
+  ],
+  "annatto_color": [
+    "Annatto color",
+    "artificial_color"
+  ],
+  "apple": [
+    "Apple",
+    "Apfel",
+    "whole_food"
+  ],
+  "apple_cider_vinegar": [
+    "Apple cider vinegar",
+    "Apfelessig",
+    "acid"
+  ],
+  "argan_oil": [
+    "Argan oil",
+    "Arganöl",
+    "botanical"
+  ],
+  "arrowroot_powder": [
+    "Arrowroot powder",
+    "Pfeilwurzelstärke",
+    "starch"
+  ],
+  "artificial_butter_flavor": [
+    "Artificial butter flavor",
+    "gum"
+  ],
+  "artificial_color": [
+    "Artificial color",
+    "künstlicher Farbstoff",
+    "artificial_color"
+  ],
+  "artificial_flavors": [
+    "Artificial flavors",
+    "Aroma / künstliches Aroma",
+    "Aroma",
+    "künstliches Aroma",
+    "flavor"
+  ],
+  "artificial_preservatives_blend": [
+    "Artificial preservatives blend",
+    "preservative"
+  ],
+  "artificial_sweetener_blend": [
+    "Artificial sweetener blend",
+    "Süßstoffmischung",
+    "artificial_sweetener"
+  ],
+  "artificial_vanilla_flavor": [
+    "Artificial vanilla flavor",
+    "natural/artificial_flavors"
+  ],
+  "ascorbic_acid": [
+    "Ascorbic acid",
+    "Ascorbinsäure / Vitamin C",
+    "Ascorbinsäure",
+    "Vitamin C",
+    "vitamin",
+    "E300"
+  ],
+  "aspartame": [
+    "Aspartame",
+    "Aspartam",
+    "artificial_sweetener",
+    "E951",
+    "enthält eine Phenylalaninquelle"
+  ],
+  "autolyzed_yeast_extract": [
+    "Autolyzed yeast extract",
+    "autolysierter Hefeextrakt",
+    "flavor_enhancer"
+  ],
+  "avobenzone": [
+    "Avobenzone",
+    "Avobenzon",
+    "uv_filter",
+    "Oxybenzon",
+    "Benzophenone-3",
+    "Octinoxat",
+    "Homosalat",
+    "Octocrylen"
+  ],
+  "avocado_oil": [
+    "Avocado oil",
+    "Avocadoöl",
+    "clean_oil"
+  ],
+  "azelaic_acid": [
+    "Azelaic acid",
+    "Azelainsäure",
+    "active"
+  ],
+  "azodicarbonamide": [
+    "Azodicarbonamide",
+    "Azodicarbonamid",
+    "additive"
+  ],
+  "azorubine": [
+    "Azorubine",
+    "Azorubin / E122",
+    "artificial_color"
+  ],
+  "baking_powder": [
+    "Baking powder",
+    "Backpulver",
+    "leavening"
+  ],
+  "bakuchiol": [
+    "Bakuchiol",
+    "active"
+  ],
+  "bamboo_fiber": [
+    "Bamboo fiber",
+    "Bambusfaser",
+    "fiber"
+  ],
+  "banana": [
+    "Banana",
+    "Banane",
+    "whole_food"
+  ],
+  "barley_malt_syrup": [
+    "Barley malt syrup",
+    "sweeteners"
+  ],
+  "basil": [
+    "Basil",
+    "Basilikum",
+    "spice"
+  ],
+  "beef": [
+    "Beef",
+    "Rindfleisch",
+    "animal_product"
+  ],
+  "beef_tallow": [
+    "Beef tallow",
+    "Rindertalg",
+    "clean_fat"
+  ],
+  "beef_tallow_2": [
+    "Beef tallow",
+    "oils_&_fats"
+  ],
+  "beeswax": [
+    "Beeswax",
+    "Bienenwachs",
+    "botanical"
+  ],
+  "beet_juice_color": [
+    "Beet juice color",
+    "artificial_color"
+  ],
+  "beetroot": [
+    "Beetroot",
+    "Rote Bete",
+    "whole_food"
+  ],
+  "bentonite_clay": [
+    "Bentonite clay",
+    "Bentonit",
+    "mineral"
+  ],
+  "benzalkonium_chloride": [
+    "Benzalkonium chloride",
+    "Benzalkoniumchlorid",
+    "quat"
+  ],
+  "benzoic_acid": [
+    "Benzoic acid",
+    "preservative"
+  ],
+  "benzophenone": [
+    "Benzophenone",
+    "Benzophenon",
+    "uv_filter",
+    "Oxybenzon",
+    "Benzophenone-3",
+    "Octinoxat",
+    "Homosalat",
+    "Octocrylen",
+    "Avobenzon"
+  ],
+  "benzyl_alcohol": [
+    "Benzyl alcohol",
+    "Benzylalkohol",
+    "preservative"
+  ],
+  "beta_carotene_color": [
+    "Beta carotene color",
+    "artificial_color"
+  ],
+  "beta_glucan": [
+    "Beta-glucan",
+    "Beta-Glucan",
+    "active"
+  ],
+  "betaine": [
+    "Betaine",
+    "Betain",
+    "humectant"
+  ],
+  "bha": [
+    "BHA",
+    "BHA / Butylhydroxyanisol",
+    "Butylhydroxyanisol",
+    "preservative",
+    "E320"
+  ],
+  "bht": [
+    "BHT",
+    "BHT / Butylhydroxytoluol",
+    "Butylhydroxytoluol",
+    "preservative",
+    "E321"
+  ],
+  "black_beans": [
+    "Black beans",
+    "Schwarze Bohnen",
+    "whole_food"
+  ],
+  "black_pepper": [
+    "Black pepper",
+    "Schwarzer Pfeffer",
+    "spice"
+  ],
+  "bleached_flour": [
+    "Bleached flour",
+    "gebleichtes Mehl",
+    "flour"
+  ],
+  "blue_1": [
+    "Blue 1",
+    "Brillantblau FCF / E133 / Blue 1",
+    "artificial_color"
+  ],
+  "blue_2": [
+    "Blue 2",
+    "Indigotin / E132 / Blue 2",
+    "artificial_color"
+  ],
+  "blueberries": [
+    "Blueberries",
+    "Blaubeeren",
+    "whole_food"
+  ],
+  "brilliant_black_bn": [
+    "Brilliant Black BN",
+    "Brillantschwarz BN / E151",
+    "artificial_color"
+  ],
+  "brilliant_blue_fcf": [
+    "Brilliant Blue FCF",
+    "Brillantblau FCF / E133",
+    "artificial_color"
+  ],
+  "broccoli": [
+    "Broccoli",
+    "Brokkoli",
+    "whole_food"
+  ],
+  "brominated_vegetable_oil": [
+    "Brominated vegetable oil",
+    "Bromiertes Pflanzenöl",
+    "eu_us_difference"
+  ],
+  "bronopol": [
+    "Bronopol",
+    "formaldehyde_releaser"
+  ],
+  "brown_ht": [
+    "Brown HT",
+    "Braun HT / E155",
+    "artificial_color"
+  ],
+  "brown_rice": [
+    "Brown rice",
+    "Vollkornreis",
+    "whole_food"
+  ],
+  "brown_rice_syrup": [
+    "Brown rice syrup",
+    "Reissirup",
+    "sugar"
+  ],
+  "brown_sugar": [
+    "Brown sugar",
+    "sweeteners"
+  ],
+  "buckwheat": [
+    "Buckwheat",
+    "Buchweizen",
+    "whole_food"
+  ],
+  "butane": [
+    "Butane",
+    "Butan",
+    "propellant"
+  ],
+  "butter": [
+    "Butter",
+    "dairy"
+  ],
+  "buttermilk_powder": [
+    "Buttermilk powder",
+    "Buttermilchpulver",
+    "dairy"
+  ],
+  "butylparaben": [
+    "Butylparaben",
+    "paraben",
+    "Methylparaben",
+    "Propylparaben",
+    "Ethylparaben"
+  ],
+  "butylphenyl_methylpropional": [
+    "Butylphenyl methylpropional",
+    "Lilial / BMHCA",
+    "fragrance",
+    "Parfum",
+    "Duftstoff",
+    "Duftstoffe",
+    "Aroma"
+  ],
+  "cacao_butter": [
+    "Cacao butter",
+    "Kakaobutter",
+    "clean_fat"
+  ],
+  "calcium_benzoate": [
+    "Calcium benzoate",
+    "Calciumbenzoat / E213",
+    "preservative"
+  ],
+  "calcium_carbonate": [
+    "Calcium carbonate",
+    "preservative"
+  ],
+  "calcium_citrate": [
+    "Calcium citrate",
+    "Calciumcitrat",
+    "mineral"
+  ],
+  "calcium_peroxide": [
+    "Calcium peroxide",
+    "Calciumperoxid",
+    "additive"
+  ],
+  "calcium_phosphate": [
+    "Calcium phosphate",
+    "Calciumphosphat",
+    "phosphate"
+  ],
+  "calcium_propionate": [
+    "Calcium propionate",
+    "Calciumpropionat / E282",
+    "Calciumpropionat",
+    "E282",
+    "preservative"
+  ],
+  "calcium_stearoyl_lactylate": [
+    "Calcium stearoyl lactylate",
+    "emulsifiers"
+  ],
+  "calendula_extract": [
+    "Calendula extract",
+    "Ringelblumenextrakt",
+    "botanical"
+  ],
+  "candelilla_wax": [
+    "Candelilla wax",
+    "Candelillawachs",
+    "botanical"
+  ],
+  "cane_sugar": [
+    "Cane sugar",
+    "Rohrzucker",
+    "sugar"
+  ],
+  "canola_oil": [
+    "Canola oil",
+    "Rapsöl",
+    "seed_oil",
+    "Rapskernöl"
+  ],
+  "caprylic_capric_triglyceride": [
+    "Caprylic/capric triglyceride",
+    "Capryl-/Caprinsäure-Triglycerid",
+    "emollient"
+  ],
+  "caprylyl_capryl_glucoside": [
+    "Caprylyl/capryl glucoside",
+    "Caprylyl/Capryl Glucosid",
+    "surfactant",
+    "SLS",
+    "SLES",
+    "Natriumlaurylsulfat",
+    "Natriumlaurethsulfat"
+  ],
+  "caramel_color": [
+    "Caramel color",
+    "Zuckerkulör / E150",
+    "Zuckerkulör",
+    "E150",
+    "artificial_color",
+    "Karamell"
+  ],
+  "carbomer": [
+    "Carbomer",
+    "polymer"
+  ],
+  "carboxymethylcellulose": [
+    "Carboxymethylcellulose",
+    "gum"
+  ],
+  "carnauba_wax": [
+    "Carnauba wax",
+    "Carnaubawachs",
+    "botanical"
+  ],
+  "carrageenan": [
+    "Carrageenan",
+    "Carrageen / E407",
+    "Carrageen",
+    "E407",
+    "gum"
+  ],
+  "carrageenan_in_creamer": [
+    "Carrageenan in creamer",
+    "Carrageen / E407",
+    "gum"
+  ],
+  "carrots": [
+    "Carrots",
+    "Karotten",
+    "whole_food"
+  ],
+  "casein": [
+    "Casein",
+    "protein"
+  ],
+  "cashews": [
+    "Cashews",
+    "whole_food"
+  ],
+  "castor_oil": [
+    "Castor oil",
+    "Rizinusöl",
+    "botanical"
+  ],
+  "cellulose_gum": [
+    "Cellulose gum",
+    "gum"
+  ],
+  "centella_asiatica": [
+    "Centella asiatica",
+    "Centella Asiatica / Tigergras",
+    "botanical"
+  ],
+  "ceramides": [
+    "Ceramides",
+    "Ceramide",
+    "active"
+  ],
+  "ceresin": [
+    "Ceresin",
+    "petroleum"
+  ],
+  "cetearyl_alcohol": [
+    "Cetearyl alcohol",
+    "Cetearylalkohol",
+    "fatty_alcohol"
+  ],
+  "cetyl_alcohol": [
+    "Cetyl alcohol",
+    "Cetylalkohol",
+    "fatty_alcohol"
+  ],
+  "chamomile_extract": [
+    "Chamomile extract",
+    "Kamillenextrakt",
+    "botanical"
+  ],
+  "cheddar": [
+    "Cheddar",
+    "dairy"
+  ],
+  "cheese_culture": [
+    "Cheese culture",
+    "Käsekulturen",
+    "culture"
+  ],
+  "chia_seeds": [
+    "Chia seeds",
+    "Chiasamen",
+    "whole_food"
+  ],
+  "chicken": [
+    "Chicken",
+    "Hähnchen",
+    "animal_product"
+  ],
+  "chickpeas": [
+    "Chickpeas",
+    "Kichererbsen",
+    "whole_food"
+  ],
+  "chicory_root_fiber": [
+    "Chicory root fiber",
+    "Zichorienwurzelfaser / Inulin",
+    "fiber"
+  ],
+  "chlorhexidine": [
+    "Chlorhexidine",
+    "Chlorhexidin",
+    "antimicrobial"
+  ],
+  "chlorine_bleach": [
+    "Chlorine bleach",
+    "fragrance",
+    "Parfum",
+    "Duftstoff",
+    "Duftstoffe",
+    "Aroma"
+  ],
+  "chlorine_dioxide": [
+    "Chlorine dioxide",
+    "Chlordioxid",
+    "additive"
+  ],
+  "chlorphenesin": [
+    "Chlorphenesin",
+    "preservative"
+  ],
+  "cinnamon": [
+    "Cinnamon",
+    "Zimt",
+    "spice"
+  ],
+  "citric_acid": [
+    "Citric acid",
+    "Citronensäure / E330",
+    "Citronensäure",
+    "E330",
+    "acid"
+  ],
+  "coal_tar_dyes": [
+    "Coal tar dyes",
+    "Steinkohlenteer-Farbstoffe",
+    "colorant"
+  ],
+  "cocamide_dea": [
+    "Cocamide DEA",
+    "Cocamid DEA",
+    "amine"
+  ],
+  "cocamidopropyl_betaine": [
+    "Cocamidopropyl betaine",
+    "Cocamidopropylbetain",
+    "surfactant",
+    "SLS",
+    "SLES",
+    "Natriumlaurylsulfat",
+    "Natriumlaurethsulfat"
+  ],
+  "coco_caprylate": [
+    "Coco-caprylate",
+    "Coco-Caprylat",
+    "emollient"
+  ],
+  "coco_glucoside": [
+    "Coco-glucoside",
+    "Coco-Glucosid",
+    "surfactant",
+    "SLS",
+    "SLES",
+    "Natriumlaurylsulfat",
+    "Natriumlaurethsulfat"
+  ],
+  "cocoa_liquor": [
+    "Cocoa liquor",
+    "Kakaomasse",
+    "cocoa"
+  ],
+  "cocoa_mass": [
+    "Cocoa mass",
+    "Kakaomasse",
+    "cocoa"
+  ],
+  "cocoa_powder": [
+    "Cocoa powder",
+    "Kakaopulver",
+    "whole_food"
+  ],
+  "coconut_flour": [
+    "Coconut flour",
+    "Kokosmehl",
+    "flour"
+  ],
+  "coconut_sugar": [
+    "Coconut sugar",
+    "Kokosblütenzucker",
+    "sugar"
+  ],
+  "collagen_peptides": [
+    "Collagen peptides",
+    "Kollagenpeptide",
+    "protein"
+  ],
+  "collagen_peptides_2": [
+    "Collagen peptides",
+    "protein"
+  ],
+  "colloidal_oatmeal": [
+    "Colloidal oatmeal",
+    "kolloidales Hafermehl",
+    "botanical"
+  ],
+  "conventional_dairy": [
+    "Conventional dairy",
+    "gum"
+  ],
+  "copper_peptide": [
+    "Copper peptide",
+    "Kupferpeptid",
+    "active"
+  ],
+  "corn_dextrin": [
+    "Corn dextrin",
+    "preservative"
+  ],
+  "corn_flour_gmo_risk": [
+    "Corn flour GMO risk",
+    "grain/flour_ingredients"
+  ],
+  "corn_syrup": [
+    "Corn syrup",
+    "Maissirup",
+    "processed_sugar",
+    "Maisöl",
+    "Maiskeimöl"
+  ],
+  "cottage_cheese": [
+    "Cottage cheese",
+    "Hüttenkäse",
+    "dairy"
+  ],
+  "cottonseed_oil": [
+    "Cottonseed oil",
+    "Baumwollsamenöl",
+    "seed_oil"
+  ],
+  "cream_cheese": [
+    "Cream cheese",
+    "Frischkäse",
+    "dairy"
+  ],
+  "cream_powder": [
+    "Cream powder",
+    "Sahnepulver",
+    "dairy"
+  ],
+  "cultured_cream": [
+    "Cultured cream",
+    "gum"
+  ],
+  "cultured_dextrose": [
+    "Cultured dextrose",
+    "preservative"
+  ],
+  "cyclamate": [
+    "Cyclamate",
+    "Cyclamat",
+    "artificial_sweetener"
+  ],
+  "cyclohexasiloxane": [
+    "Cyclohexasiloxane",
+    "Cyclohexasiloxan",
+    "silicone"
+  ],
+  "cyclopentasiloxane": [
+    "Cyclopentasiloxane",
+    "Cyclopentasiloxan",
+    "silicone"
+  ],
+  "cyclopentasiloxane_2": [
+    "Cyclopentasiloxane",
+    "Cyclopentasiloxane, D5",
+    "fragrance",
+    "Parfum",
+    "Duftstoff",
+    "Duftstoffe",
+    "Aroma"
+  ],
+  "dark_chocolate": [
+    "Dark chocolate",
+    "Zartbitterschokolade",
+    "cocoa"
+  ],
+  "date_syrup": [
+    "Date syrup",
+    "Dattelsirup",
+    "sugar"
+  ],
+  "datem": [
+    "DATEM",
+    "emulsifier"
+  ],
+  "dates": [
+    "Dates",
+    "sweeteners"
+  ],
+  "dea": [
+    "DEA",
+    "Diethanolamin",
+    "amine"
+  ],
+  "decyl_glucoside": [
+    "Decyl glucoside",
+    "Decylglucosid",
+    "surfactant",
+    "SLS",
+    "SLES",
+    "Natriumlaurylsulfat",
+    "Natriumlaurethsulfat"
+  ],
+  "dep": [
+    "DEP",
+    "Diethylphthalat",
+    "fragrance",
+    "Parfum",
+    "Duftstoff",
+    "Duftstoffe",
+    "Aroma"
+  ],
+  "dextrose": [
+    "Dextrose",
+    "Dextrose / Traubenzucker",
+    "processed_sugar"
+  ],
+  "dextrose_carrier": [
+    "Dextrose carrier",
+    "preservative"
+  ],
+  "diazolidinyl_urea": [
+    "Diazolidinyl urea",
+    "Diazolidinylharnstoff",
+    "formaldehyde_releaser"
+  ],
+  "dibutyl_phthalate": [
+    "Dibutyl phthalate",
+    "Dibutylphthalat / DBP",
+    "phthalate"
+  ],
+  "dimethicone": [
+    "Dimethicone",
+    "Dimethicon",
+    "silicone"
+  ],
+  "dimethicone_2": [
+    "Dimethicone",
+    "fragrance",
+    "Parfum",
+    "Duftstoff",
+    "Duftstoffe",
+    "Aroma"
+  ],
+  "disodium_cocoyl_glutamate": [
+    "Disodium cocoyl glutamate",
+    "Dinatriumcocoylglutamat",
+    "surfactant",
+    "SLS",
+    "SLES",
+    "Natriumlaurylsulfat",
+    "Natriumlaurethsulfat"
+  ],
+  "disodium_edta": [
+    "Disodium EDTA",
+    "Dinatrium-EDTA",
+    "chelator"
+  ],
+  "disodium_guanylate": [
+    "Disodium guanylate",
+    "Dinatriumguanylat / E627",
+    "flavor_enhancer"
+  ],
+  "disodium_inosinate": [
+    "Disodium inosinate",
+    "Dinatriuminosinat / E631",
+    "flavor_enhancer"
+  ],
+  "disodium_phosphate": [
+    "Disodium phosphate",
+    "Dinatriumphosphat",
+    "phosphate",
+    "E339"
+  ],
+  "dmdm_hydantoin": [
+    "DMDM hydantoin",
+    "DMDM Hydantoin",
+    "formaldehyde_releaser"
+  ],
+  "edta": [
+    "EDTA",
+    "chelator"
+  ],
+  "egg_white_protein": [
+    "Egg white protein",
+    "Eiklarprotein",
+    "protein"
+  ],
+  "eggs": [
+    "Eggs",
+    "Eier",
+    "animal_product"
+  ],
+  "enriched_bleached_flour": [
+    "Enriched bleached flour",
+    "angereichertes gebleichtes Mehl",
+    "flour"
+  ],
+  "enriched_wheat_flour": [
+    "Enriched wheat flour",
+    "angereichertes Weizenmehl",
+    "grain"
+  ],
+  "erythritol": [
+    "Erythritol",
+    "Erythrit",
+    "sugar_alcohol"
+  ],
+  "ethanolamine": [
+    "Ethanolamine",
+    "Ethanolamin",
+    "amine"
+  ],
+  "ethyl_alcohol": [
+    "Ethyl alcohol",
+    "Ethanol",
+    "alcohol"
+  ],
+  "ethyl_vanillin": [
+    "Ethyl vanillin",
+    "natural/artificial_flavors"
+  ],
+  "ethylhexylglycerin": [
+    "Ethylhexylglycerin",
+    "preservative"
+  ],
+  "ethylparaben": [
+    "Ethylparaben",
+    "paraben",
+    "Methylparaben",
+    "Propylparaben",
+    "Butylparaben"
+  ],
+  "evaporated_cane_juice": [
+    "Evaporated cane juice",
+    "sweeteners"
+  ],
+  "extra_virgin_olive_oil": [
+    "Extra virgin olive oil",
+    "Natives Olivenöl extra",
+    "clean_oil"
+  ],
+  "feta": [
+    "Feta",
+    "dairy"
+  ],
+  "fish_oil": [
+    "Fish oil",
+    "Fischöl",
+    "oil"
+  ],
+  "flaxseed": [
+    "Flaxseed",
+    "Leinsamen",
+    "whole_food"
+  ],
+  "formaldehyde": [
+    "Formaldehyde",
+    "Formaldehyd",
+    "formaldehyde_releaser"
+  ],
+  "formaldehyde_releasers": [
+    "Formaldehyde releasers",
+    "fragrance",
+    "Parfum",
+    "Duftstoff",
+    "Duftstoffe",
+    "Aroma"
+  ],
+  "fragrance": [
+    "Fragrance",
+    "Duftstoff / Parfum",
+    "Parfum",
+    "Duftstoff",
+    "Duftstoffe",
+    "Aroma"
+  ],
+  "fructose": [
+    "Fructose",
+    "sweeteners"
+  ],
+  "galaxolide": [
+    "Galaxolide",
+    "Galaxolid / HHCB",
+    "fragrance",
+    "Parfum",
+    "Duftstoff",
+    "Duftstoffe",
+    "Aroma"
+  ],
+  "garlic": [
+    "Garlic",
+    "Knoblauch",
+    "whole_food"
+  ],
+  "gelatin": [
+    "Gelatin",
+    "Gelatine",
+    "protein"
+  ],
+  "gellan_gum": [
+    "Gellan gum",
+    "Gellan / E418",
+    "Gellan",
+    "E418",
+    "gum"
+  ],
+  "ghee": [
+    "Ghee",
+    "Ghee / Butterschmalz",
+    "clean_fat"
+  ],
+  "ginger": [
+    "Ginger",
+    "Ingwer",
+    "whole_food"
+  ],
+  "glucose_fructose_syrup": [
+    "Glucose-fructose syrup",
+    "Glukose-Fruktose-Sirup",
+    "processed_sugar"
+  ],
+  "glucose_syrup": [
+    "Glucose syrup",
+    "Glukosesirup",
+    "processed_sugar"
+  ],
+  "glycerin": [
+    "Glycerin",
+    "humectant"
+  ],
+  "glyceryl_stearate": [
+    "Glyceryl stearate",
+    "Glycerylstearat",
+    "emulsifier"
+  ],
+  "glycolic_acid": [
+    "Glycolic acid",
+    "Glykolsäure",
+    "active"
+  ],
+  "glyphosate_sprayed_conventional_oats": [
+    "Glyphosate-sprayed conventional oats",
+    "grain/flour_ingredients"
+  ],
+  "gouda": [
+    "Gouda",
+    "dairy"
+  ],
+  "grapeseed_oil": [
+    "Grapeseed oil",
+    "Traubenkernöl",
+    "seed_oil"
+  ],
+  "grass_fed_butter": [
+    "Grass-fed butter",
+    "Weidebutter",
+    "clean_fat"
+  ],
+  "grass_fed_butter_2": [
+    "Grass-fed butter",
+    "oils_&_fats"
+  ],
+  "grass_fed_dairy": [
+    "Grass-fed dairy",
+    "gum"
+  ],
+  "grass_fed_whey_protein": [
+    "Grass-fed whey protein",
+    "protein"
+  ],
+  "greek_yogurt": [
+    "Greek yogurt",
+    "Griechischer Joghurt",
+    "dairy"
+  ],
+  "green_3": [
+    "Green 3",
+    "Fast Green FCF / Green 3",
+    "artificial_color"
+  ],
+  "green_tea_extract": [
+    "Green tea extract",
+    "Grüntee-Extrakt",
+    "botanical"
+  ],
+  "guar_gum": [
+    "Guar gum",
+    "Guarkernmehl / E412",
+    "Guarkernmehl",
+    "E412",
+    "gum"
+  ],
+  "hazelnuts": [
+    "Hazelnuts",
+    "Haselnüsse",
+    "whole_food"
+  ],
+  "hemp_protein": [
+    "Hemp protein",
+    "Hanfprotein",
+    "protein"
+  ],
+  "hemp_seeds": [
+    "Hemp seeds",
+    "Hanfsamen",
+    "whole_food"
+  ],
+  "high_fructose_corn_syrup": [
+    "High fructose corn syrup",
+    "Maissirup mit hohem Fruktosegehalt",
+    "processed_sugar",
+    "Glukose-Fruktose-Sirup",
+    "Fruktose-Glukose-Sirup"
+  ],
+  "homosalate": [
+    "Homosalate",
+    "Homosalat",
+    "uv_filter",
+    "Oxybenzon",
+    "Benzophenone-3",
+    "Octinoxat",
+    "Octocrylen",
+    "Avobenzon"
+  ],
+  "honey": [
+    "Honey",
+    "Honig",
+    "sugar"
+  ],
+  "hyaluronic_acid": [
+    "Hyaluronic acid",
+    "Hyaluronsäure",
+    "active"
+  ],
+  "hydrogenated_oil": [
+    "Hydrogenated oil",
+    "gehärtetes Öl",
+    "hydrogenated_oil"
+  ],
+  "hydrogenated_vegetable_oil": [
+    "Hydrogenated vegetable oil",
+    "oils_&_fats"
+  ],
+  "hydrolyzed_collagen": [
+    "Hydrolyzed collagen",
+    "protein"
+  ],
+  "hydrolyzed_soy_protein": [
+    "Hydrolyzed soy protein",
+    "protein"
+  ],
+  "hydrolyzed_vegetable_protein": [
+    "Hydrolyzed vegetable protein",
+    "hydrolysiertes Pflanzenprotein",
+    "flavor_enhancer"
+  ],
+  "hydroquinone": [
+    "Hydroquinone",
+    "Hydrochinon",
+    "skin_lightener"
+  ],
+  "imidazolidinyl_urea": [
+    "Imidazolidinyl urea",
+    "Imidazolidinylharnstoff",
+    "formaldehyde_releaser"
+  ],
+  "interesterified_oil": [
+    "Interesterified oil",
+    "oils_&_fats"
+  ],
+  "inulin": [
+    "Inulin",
+    "fiber"
+  ],
+  "invert_sugar_syrup": [
+    "Invert sugar syrup",
+    "Invertzuckersirup",
+    "processed_sugar",
+    "Invertzucker"
+  ],
+  "iodized_salt": [
+    "Iodized salt",
+    "Jodsalz",
+    "salt"
+  ],
+  "isoamyl_laurate": [
+    "Isoamyl laurate",
+    "Isoamyllaurat",
+    "emollient"
+  ],
+  "isobutane": [
+    "Isobutane",
+    "Isobutan",
+    "propellant"
+  ],
+  "isobutylparaben": [
+    "Isobutylparaben",
+    "paraben",
+    "Methylparaben",
+    "Propylparaben",
+    "Butylparaben",
+    "Ethylparaben"
+  ],
+  "isomalt": [
+    "Isomalt",
+    "sugar_alcohol"
+  ],
+  "isomalto_oligosaccharide_imo": [
+    "Isomalto-oligosaccharide / IMO",
+    "sugar_alcohol"
+  ],
+  "jojoba_oil": [
+    "Jojoba oil",
+    "Jojobaöl",
+    "botanical"
+  ],
+  "kale": [
+    "Kale",
+    "Grünkohl",
+    "whole_food"
+  ],
+  "kaolin_clay": [
+    "Kaolin clay",
+    "Kaolin / weiße Tonerde",
+    "mineral"
+  ],
+  "kefir": [
+    "Kefir",
+    "dairy"
+  ],
+  "kidney_beans": [
+    "Kidney beans",
+    "Kidneybohnen",
+    "whole_food"
+  ],
+  "konjac_gum": [
+    "Konjac gum",
+    "gum"
+  ],
+  "lactic_acid": [
+    "Lactic acid",
+    "Milchsäure",
+    "acid"
+  ],
+  "lactic_acid_bacteria": [
+    "Lactic acid bacteria",
+    "Milchsäurebakterien",
+    "culture"
+  ],
+  "lauryl_glucoside": [
+    "Lauryl glucoside",
+    "Laurylglucosid",
+    "surfactant",
+    "SLS",
+    "SLES",
+    "Natriumlaurylsulfat",
+    "Natriumlaurethsulfat"
+  ],
+  "lecithin": [
+    "Lecithin",
+    "emulsifier"
+  ],
+  "lemon_juice": [
+    "Lemon juice",
+    "Zitronensaft",
+    "whole_food"
+  ],
+  "lentils": [
+    "Lentils",
+    "Linsen",
+    "whole_food"
+  ],
+  "leuconostoc_radish_root_ferment_filtrate": [
+    "Leuconostoc/radish root ferment filtrate",
+    "Leuconostoc/Rettichwurzel-Fermentfiltrat",
+    "preservative"
+  ],
+  "licorice_root_extract": [
+    "Licorice root extract",
+    "Süßholzwurzelextrakt",
+    "botanical"
+  ],
+  "litholrubine_bk": [
+    "Litholrubine BK",
+    "Litholrubin BK / E180",
+    "artificial_color"
+  ],
+  "live_cultures": [
+    "Live cultures",
+    "lebende Kulturen",
+    "culture"
+  ],
+  "locust_bean_gum": [
+    "Locust bean gum",
+    "Johannisbrotkernmehl / E410",
+    "Johannisbrotkernmehl",
+    "E410",
+    "gum"
+  ],
+  "lyral": [
+    "Lyral",
+    "Hydroxyisohexyl 3-cyclohexene carboxaldehyde",
+    "fragrance",
+    "Parfum",
+    "Duftstoff",
+    "Duftstoffe",
+    "Aroma"
+  ],
+  "magnesium_ascorbyl_phosphate": [
+    "Magnesium ascorbyl phosphate",
+    "Magnesiumascorbylphosphat",
+    "vitamin"
+  ],
+  "magnesium_chloride": [
+    "Magnesium chloride",
+    "Magnesiumchlorid",
+    "mineral"
+  ],
+  "magnesium_sulfate": [
+    "Magnesium sulfate",
+    "Magnesiumsulfat / Bittersalz",
+    "mineral"
+  ],
+  "malic_acid": [
+    "Malic acid",
+    "Äpfelsäure",
+    "acid"
+  ],
+  "malt_syrup": [
+    "Malt syrup",
+    "sweeteners"
+  ],
+  "maltitol": [
+    "Maltitol",
+    "Maltit",
+    "sugar_alcohol",
+    "Maltitsirup",
+    "E965"
+  ],
+  "maltodextrin": [
+    "Maltodextrin",
+    "processed_sugar"
+  ],
+  "mandelic_acid": [
+    "Mandelic acid",
+    "Mandelsäure",
+    "active"
+  ],
+  "maple_syrup": [
+    "Maple syrup",
+    "Ahornsirup",
+    "sugar"
+  ],
+  "margarine": [
+    "Margarine",
+    "processed_oil"
+  ],
+  "mea": [
+    "MEA",
+    "Monoethanolamin",
+    "amine"
+  ],
+  "methylchloroisothiazolinone": [
+    "Methylchloroisothiazolinone",
+    "Methylchloroisothiazolinon / CMIT",
+    "preservative"
+  ],
+  "methylisothiazolinone": [
+    "Methylisothiazolinone",
+    "Methylisothiazolinon / MIT",
+    "preservative"
+  ],
+  "methylparaben": [
+    "Methylparaben",
+    "paraben",
+    "Propylparaben",
+    "Butylparaben",
+    "Ethylparaben"
+  ],
+  "microcrystalline_cellulose": [
+    "Microcrystalline cellulose",
+    "gum"
+  ],
+  "microcrystalline_wax": [
+    "Microcrystalline wax",
+    "mikrokristallines Wachs",
+    "petroleum"
+  ],
+  "milk_powder": [
+    "Milk powder",
+    "Milchpulver",
+    "dairy"
+  ],
+  "milk_protein_isolate": [
+    "Milk protein isolate",
+    "gum"
+  ],
+  "milk_protein_isolate_2": [
+    "Milk protein isolate",
+    "Milchproteinisolat",
+    "protein"
+  ],
+  "millet": [
+    "Millet",
+    "Hirse",
+    "whole_food"
+  ],
+  "mineral_oil": [
+    "Mineral oil",
+    "Mineralöl / Paraffinum Liquidum",
+    "petroleum"
+  ],
+  "mineral_water": [
+    "Mineral water",
+    "Mineralwasser",
+    "clean"
+  ],
+  "mixed_tocopherols": [
+    "Mixed tocopherols",
+    "gemischte Tocopherole",
+    "vitamin"
+  ],
+  "modified_cellulose": [
+    "Modified cellulose",
+    "gum"
+  ],
+  "modified_corn_starch": [
+    "Modified corn starch",
+    "modifizierte Maisstärke",
+    "starch",
+    "modifizierte Stärke"
+  ],
+  "modified_food_starch": [
+    "Modified food starch",
+    "modifizierte Stärke",
+    "starch"
+  ],
+  "molasses": [
+    "Molasses",
+    "Melasse",
+    "sugar"
+  ],
+  "monk_fruit_extract": [
+    "Monk fruit extract",
+    "Mönchsfrucht-Extrakt",
+    "sweetener",
+    "Mönchsfrucht",
+    "Luo Han Guo"
+  ],
+  "mono_and_diglycerides": [
+    "Mono- and diglycerides",
+    "Mono- und Diglyceride von Speisefettsäuren",
+    "Mono- und Diglyceride von Speisefettsäuren, E471",
+    "emulsifiers"
+  ],
+  "mono_and_diglycerides_2": [
+    "Mono- and diglycerides",
+    "Mono- und Diglyceride",
+    "emulsifier"
+  ],
+  "monosodium_glutamate": [
+    "Monosodium glutamate",
+    "Mononatriumglutamat",
+    "flavor_enhancer"
+  ],
+  "mozzarella": [
+    "Mozzarella",
+    "dairy"
+  ],
+  "msg": [
+    "MSG",
+    "Mononatriumglutamat / E621",
+    "flavor_enhancer"
+  ],
+  "natural_flavors": [
+    "Natural flavors",
+    "natürliches Aroma",
+    "flavor",
+    "Aroma",
+    "Raucharoma"
+  ],
+  "neotame": [
+    "Neotame",
+    "Neotam / E961",
+    "artificial_sweetener"
+  ],
+  "niacinamide": [
+    "Niacinamide",
+    "Niacinamid",
+    "active"
+  ],
+  "nonfat_dry_milk": [
+    "Nonfat dry milk",
+    "gum"
+  ],
+  "nutritional_yeast": [
+    "Nutritional yeast",
+    "Nährhefe",
+    "yeast"
+  ],
+  "oat_fiber": [
+    "Oat fiber",
+    "Haferfaser",
+    "fiber"
+  ],
+  "oats": [
+    "Oats",
+    "Hafer",
+    "grain"
+  ],
+  "octinoxate": [
+    "Octinoxate",
+    "Octinoxat / Ethylhexyl methoxycinnamate",
+    "uv_filter",
+    "Oxybenzon",
+    "Benzophenone-3",
+    "Octinoxat",
+    "Homosalat",
+    "Octocrylen",
+    "Avobenzon"
+  ],
+  "octocrylene": [
+    "Octocrylene",
+    "Octocrylen",
+    "uv_filter",
+    "Oxybenzon",
+    "Benzophenone-3",
+    "Octinoxat",
+    "Homosalat",
+    "Avobenzon"
+  ],
+  "olives": [
+    "Olives",
+    "Oliven",
+    "whole_food"
+  ],
+  "onion": [
+    "Onion",
+    "Zwiebel",
+    "whole_food"
+  ],
+  "optical_brighteners": [
+    "Optical brighteners",
+    "fragrance",
+    "Parfum",
+    "Duftstoff",
+    "Duftstoffe",
+    "Aroma"
+  ],
+  "oregano": [
+    "Oregano",
+    "spice"
+  ],
+  "organic_cane_sugar": [
+    "Organic cane sugar",
+    "Bio-Rohrzucker",
+    "sugar"
+  ],
+  "organic_oats": [
+    "Organic oats",
+    "grain/flour_ingredients"
+  ],
+  "organic_whole_milk": [
+    "Organic whole milk",
+    "gum"
+  ],
+  "oxybenzone": [
+    "Oxybenzone",
+    "Oxybenzon / Benzophenone-3",
+    "uv_filter",
+    "Oxybenzon",
+    "Benzophenone-3",
+    "Octinoxat",
+    "Homosalat",
+    "Octocrylen",
+    "Avobenzon"
+  ],
+  "ozokerite": [
+    "Ozokerite",
+    "Ozokerit",
+    "petroleum"
+  ],
+  "p_phenylenediamine": [
+    "P-phenylenediamine",
+    "p-Phenylendiamin / PPD",
+    "dye"
+  ],
+  "palm_kernel_oil": [
+    "Palm kernel oil",
+    "Palmkernöl",
+    "processed_oil"
+  ],
+  "palm_oil": [
+    "Palm oil",
+    "Palmöl",
+    "processed_oil"
+  ],
+  "panthenol": [
+    "Panthenol",
+    "active"
+  ],
+  "paprika": [
+    "Paprika",
+    "Paprika-Gewürz",
+    "spice"
+  ],
+  "paraffin": [
+    "Paraffin",
+    "petroleum"
+  ],
+  "parfum": [
+    "Parfum",
+    "Parfum / Duftstoff",
+    "fragrance",
+    "Duftstoff",
+    "Duftstoffe",
+    "Aroma"
+  ],
+  "parsley": [
+    "Parsley",
+    "Petersilie",
+    "spice"
+  ],
+  "partially_hydrogenated_oil": [
+    "Partially hydrogenated oil",
+    "teilweise gehärtetes Öl",
+    "hydrogenated_oil"
+  ],
+  "pasture_raised_lard": [
+    "Pasture-raised lard",
+    "oils_&_fats"
+  ],
+  "patent_blue_v": [
+    "Patent Blue V",
+    "Patentblau V / E131",
+    "artificial_color"
+  ],
+  "pea_protein": [
+    "Pea protein",
+    "Erbsenprotein",
+    "protein"
+  ],
+  "pea_protein_isolate": [
+    "Pea protein isolate",
+    "protein"
+  ],
+  "peanut_flour": [
+    "Peanut flour",
+    "Erdnussmehl",
+    "flour"
+  ],
+  "peanut_oil": [
+    "Peanut oil",
+    "Erdnussöl",
+    "seed_oil"
+  ],
+  "peas": [
+    "Peas",
+    "Erbsen",
+    "whole_food"
+  ],
+  "pectin": [
+    "Pectin",
+    "Pektin",
+    "gum",
+    "E440"
+  ],
+  "peg_100_stearate": [
+    "PEG-100 stearate",
+    "PEG-100 Stearat",
+    "peg"
+  ],
+  "peg_40_hydrogenated_castor_oil": [
+    "PEG-40 hydrogenated castor oil",
+    "PEG-40 hydriertes Rizinusöl",
+    "peg"
+  ],
+  "peg_compounds": [
+    "PEG compounds",
+    "PEG-Verbindungen",
+    "peg"
+  ],
+  "peptides": [
+    "Peptides",
+    "Peptide",
+    "active"
+  ],
+  "petrolatum": [
+    "Petrolatum",
+    "Vaseline / Petrolatum",
+    "petroleum"
+  ],
+  "pfas": [
+    "PFAS",
+    "PFAS / per- und polyfluorierte Stoffe",
+    "per- und polyfluorierte Stoffe",
+    "PTFE",
+    "Perfluoro-",
+    "Polyfluoro-"
+  ],
+  "pfoa": [
+    "PFOA",
+    "pfas"
+  ],
+  "pfos": [
+    "PFOS",
+    "pfas"
+  ],
+  "pgpr": [
+    "PGPR",
+    "emulsifiers"
+  ],
+  "phenoxyethanol": [
+    "Phenoxyethanol",
+    "preservative"
+  ],
+  "phosphoric_acid": [
+    "Phosphoric acid",
+    "Phosphorsäure / E338",
+    "Phosphorsäure",
+    "E338",
+    "phosphate"
+  ],
+  "phthalates": [
+    "Phthalates",
+    "Phthalate",
+    "fragrance",
+    "Parfum",
+    "Duftstoff",
+    "Duftstoffe",
+    "Aroma"
+  ],
+  "phthalates_fragrance_carriers": [
+    "Phthalates / fragrance carriers",
+    "fragrance",
+    "Parfum",
+    "Duftstoff",
+    "Duftstoffe",
+    "Aroma"
+  ],
+  "pistachios": [
+    "Pistachios",
+    "Pistazien",
+    "whole_food"
+  ],
+  "polydextrose": [
+    "Polydextrose",
+    "processed_additive"
+  ],
+  "polyethylene": [
+    "Polyethylene",
+    "Polyethylen",
+    "microplastic"
+  ],
+  "polyquaternium": [
+    "Polyquaternium",
+    "quat"
+  ],
+  "polysorbate_60": [
+    "Polysorbate 60",
+    "emulsifiers"
+  ],
+  "polysorbate_60_2": [
+    "Polysorbate 60",
+    "Polysorbat 60",
+    "emulsifier"
+  ],
+  "polysorbate_80": [
+    "Polysorbate 80",
+    "Polysorbat 80",
+    "emulsifier",
+    "E433"
+  ],
+  "ponceau_4r": [
+    "Ponceau 4R",
+    "Cochenillerot A / E124",
+    "artificial_color"
+  ],
+  "pork": [
+    "Pork",
+    "Schweinefleisch",
+    "animal_product"
+  ],
+  "potassium_benzoate": [
+    "Potassium benzoate",
+    "Kaliumbenzoat / E212",
+    "preservative"
+  ],
+  "potassium_benzoate_2": [
+    "Potassium benzoate",
+    "preservative"
+  ],
+  "potassium_bromate": [
+    "Potassium bromate",
+    "Kaliumbromat",
+    "additive"
+  ],
+  "potassium_citrate": [
+    "Potassium citrate",
+    "Kaliumcitrat",
+    "acid"
+  ],
+  "potassium_ferrocyanide": [
+    "Potassium ferrocyanide",
+    "Kaliumferrocyanid / E536",
+    "anti_caking"
+  ],
+  "potassium_metabisulfite": [
+    "Potassium metabisulfite",
+    "Kaliummetabisulfit / E224",
+    "preservative"
+  ],
+  "potassium_nitrate": [
+    "Potassium nitrate",
+    "Kaliumnitrat / E252",
+    "preservative"
+  ],
+  "potassium_nitrite": [
+    "Potassium nitrite",
+    "Kaliumnitrit / E249",
+    "preservative"
+  ],
+  "potassium_phosphate": [
+    "Potassium phosphate",
+    "Kaliumphosphat",
+    "phosphate"
+  ],
+  "potassium_sorbate": [
+    "Potassium sorbate",
+    "Kaliumsorbat / E202",
+    "Kaliumsorbat",
+    "E202",
+    "preservative"
+  ],
+  "potato_starch": [
+    "Potato starch",
+    "Kartoffelstärke",
+    "starch"
+  ],
+  "ppg_compounds": [
+    "PPG compounds",
+    "PPG-Verbindungen",
+    "peg"
+  ],
+  "propane": [
+    "Propane",
+    "Propan",
+    "propellant"
+  ],
+  "propyl_gallate": [
+    "Propyl gallate",
+    "preservative"
+  ],
+  "propylene_glycol": [
+    "Propylene glycol",
+    "Propylenglykol",
+    "solvent"
+  ],
+  "propylene_glycol_2": [
+    "Propylene glycol",
+    "preservative"
+  ],
+  "propylene_glycol_alginate": [
+    "Propylene glycol alginate",
+    "emulsifiers"
+  ],
+  "propylparaben": [
+    "Propylparaben",
+    "paraben",
+    "Propyl-4-hydroxybenzoat",
+    "Methylparaben",
+    "Butylparaben",
+    "Ethylparaben"
+  ],
+  "pumpkin_seed_protein": [
+    "Pumpkin seed protein",
+    "Kürbiskernprotein",
+    "protein"
+  ],
+  "pumpkin_seeds": [
+    "Pumpkin seeds",
+    "Kürbiskerne",
+    "whole_food"
+  ],
+  "pvp": [
+    "PVP",
+    "Polyvinylpyrrolidon / PVP",
+    "polymer"
+  ],
+  "quaternary_ammonium_compounds": [
+    "Quaternary ammonium compounds",
+    "fragrance",
+    "Parfum",
+    "Duftstoff",
+    "Duftstoffe",
+    "Aroma"
+  ],
+  "quaternium_15": [
+    "Quaternium-15",
+    "formaldehyde_releaser"
+  ],
+  "quats": [
+    "Quats",
+    "quartäre Ammoniumverbindungen",
+    "quat"
+  ],
+  "quinoa": [
+    "Quinoa",
+    "whole_food"
+  ],
+  "quinoline_yellow": [
+    "Quinoline Yellow",
+    "Chinolingelb / E104",
+    "artificial_color"
+  ],
+  "rapeseed_oil": [
+    "Rapeseed oil",
+    "Rapsöl",
+    "seed_oil"
+  ],
+  "raspberries": [
+    "Raspberries",
+    "Himbeeren",
+    "whole_food"
+  ],
+  "raw_cane_sugar": [
+    "Raw cane sugar",
+    "Rohrohrzucker",
+    "sugar"
+  ],
+  "raw_honey": [
+    "Raw honey",
+    "sweeteners"
+  ],
+  "red_27_lake": [
+    "Red 27 Lake",
+    "artificial_color"
+  ],
+  "red_28_lake": [
+    "Red 28 Lake",
+    "artificial_color"
+  ],
+  "red_3": [
+    "Red 3",
+    "Erythrosin / E127 / Red 3",
+    "artificial_color"
+  ],
+  "red_40": [
+    "Red 40",
+    "Allurarot AC / E129 / Red 40",
+    "artificial_color"
+  ],
+  "red_7": [
+    "Red 7",
+    "artificial_color"
+  ],
+  "refined_cane_sugar": [
+    "Refined cane sugar",
+    "sweeteners"
+  ],
+  "refined_fish_oil": [
+    "Refined fish oil",
+    "raffiniertes Fischöl",
+    "oil"
+  ],
+  "refined_palm_kernel_oil": [
+    "Refined palm kernel oil",
+    "oils_&_fats"
+  ],
+  "resistant_dextrin": [
+    "Resistant dextrin",
+    "fillers_&_starches"
+  ],
+  "resorcinol": [
+    "Resorcinol",
+    "Resorcin",
+    "dye"
+  ],
+  "retinol": [
+    "Retinol",
+    "active"
+  ],
+  "retinyl_palmitate": [
+    "Retinyl palmitate",
+    "Retinylpalmitat",
+    "vitamin_a"
+  ],
+  "rice_bran_oil": [
+    "Rice bran oil",
+    "Reiskleieöl",
+    "seed_oil"
+  ],
+  "rice_flour": [
+    "Rice flour",
+    "Reismehl",
+    "flour"
+  ],
+  "rice_protein": [
+    "Rice protein",
+    "Reisprotein",
+    "protein"
+  ],
+  "rosehip_oil": [
+    "Rosehip oil",
+    "Hagebuttenöl",
+    "botanical"
+  ],
+  "rosemary": [
+    "Rosemary",
+    "Rosmarin",
+    "spice"
+  ],
+  "rye": [
+    "Rye",
+    "Roggen",
+    "grain"
+  ],
+  "saccharin": [
+    "Saccharin",
+    "artificial_sweetener",
+    "Saccharin-Natrium",
+    "E954"
+  ],
+  "safflower_oil": [
+    "Safflower oil",
+    "Distelöl",
+    "seed_oil"
+  ],
+  "salicylic_acid": [
+    "Salicylic acid",
+    "Salicylsäure",
+    "active"
+  ],
+  "sea_salt": [
+    "Sea salt",
+    "Meersalz",
+    "salt"
+  ],
+  "seaweed": [
+    "Seaweed",
+    "Algen",
+    "whole_food"
+  ],
+  "semolina": [
+    "Semolina",
+    "Hartweizengrieß",
+    "grain"
+  ],
+  "sesame_seeds": [
+    "Sesame seeds",
+    "Sesamsamen",
+    "whole_food"
+  ],
+  "shea_butter": [
+    "Shea butter",
+    "Sheabutter",
+    "botanical"
+  ],
+  "shortening": [
+    "Shortening",
+    "oils_&_fats"
+  ],
+  "silicon_dioxide": [
+    "Silicon dioxide",
+    "Siliciumdioxid / E551",
+    "anti_caking"
+  ],
+  "skim_milk_powder": [
+    "Skim milk powder",
+    "Magermilchpulver",
+    "dairy"
+  ],
+  "skyr": [
+    "Skyr",
+    "dairy"
+  ],
+  "smoke_flavor": [
+    "Smoke flavor",
+    "natural/artificial_flavors"
+  ],
+  "sodium_acid_pyrophosphate": [
+    "Sodium acid pyrophosphate",
+    "Dinatriumdihydrogendiphosphat / E450",
+    "phosphate"
+  ],
+  "sodium_aluminum_phosphate": [
+    "Sodium aluminum phosphate",
+    "Natriumaluminiumphosphat",
+    "additive"
+  ],
+  "sodium_benzoate": [
+    "Sodium benzoate",
+    "Natriumbenzoat / E211",
+    "Natriumbenzoat",
+    "E211",
+    "preservative"
+  ],
+  "sodium_bicarbonate": [
+    "Sodium bicarbonate",
+    "Natriumbicarbonat / Natron",
+    "leavening"
+  ],
+  "sodium_chloride": [
+    "Sodium chloride",
+    "Natriumchlorid / Salz",
+    "salt"
+  ],
+  "sodium_citrate": [
+    "Sodium citrate",
+    "Natriumcitrat / E331",
+    "acid"
+  ],
+  "sodium_coco_sulfate": [
+    "Sodium coco sulfate",
+    "Natriumcocosulfat",
+    "surfactant",
+    "SLS",
+    "SLES",
+    "Natriumlaurylsulfat",
+    "Natriumlaurethsulfat"
+  ],
+  "sodium_cocoyl_glutamate": [
+    "Sodium cocoyl glutamate",
+    "Natriumcocoylglutamat",
+    "surfactant",
+    "SLS",
+    "SLES",
+    "Natriumlaurylsulfat",
+    "Natriumlaurethsulfat"
+  ],
+  "sodium_cocoyl_isethionate": [
+    "Sodium cocoyl isethionate",
+    "Natriumcocoylisethionat",
+    "surfactant",
+    "SLS",
+    "SLES",
+    "Natriumlaurylsulfat",
+    "Natriumlaurethsulfat"
+  ],
+  "sodium_cyclamate": [
+    "Sodium cyclamate",
+    "Natriumcyclamat",
+    "artificial_sweetener"
+  ],
+  "sodium_ferrocyanide": [
+    "Sodium ferrocyanide",
+    "Natriumferrocyanid / E535",
+    "anti_caking"
+  ],
+  "sodium_fluoride": [
+    "Sodium fluoride",
+    "Natriumfluorid",
+    "fluoride"
+  ],
+  "sodium_hydroxymethylglycinate": [
+    "Sodium hydroxymethylglycinate",
+    "Natriumhydroxymethylglycinat",
+    "formaldehyde_releaser"
+  ],
+  "sodium_laureth_sulfate": [
+    "Sodium laureth sulfate",
+    "Natriumlaurethsulfat / SLES",
+    "surfactant",
+    "SLS",
+    "SLES",
+    "Natriumlaurylsulfat",
+    "Natriumlaurethsulfat"
+  ],
+  "sodium_lauroyl_glutamate": [
+    "Sodium lauroyl glutamate",
+    "Natriumlauroylglutamat",
+    "surfactant",
+    "SLS",
+    "SLES",
+    "Natriumlaurylsulfat",
+    "Natriumlaurethsulfat"
+  ],
+  "sodium_lauryl_sulfate": [
+    "Sodium lauryl sulfate",
+    "Natriumlaurylsulfat / SLS",
+    "surfactant",
+    "SLS",
+    "SLES",
+    "Natriumlaurylsulfat",
+    "Natriumlaurethsulfat"
+  ],
+  "sodium_metabisulfite": [
+    "Sodium metabisulfite",
+    "Natriummetabisulfit / E223",
+    "Natriummetabisulfit",
+    "E223",
+    "preservative",
+    "Sulfite"
+  ],
+  "sodium_monofluorophosphate": [
+    "Sodium monofluorophosphate",
+    "Natriummonofluorphosphat",
+    "fluoride"
+  ],
+  "sodium_nitrate": [
+    "Sodium nitrate",
+    "Natriumnitrat / E251",
+    "Natriumnitrat",
+    "E251",
+    "preservative"
+  ],
+  "sodium_nitrite": [
+    "Sodium nitrite",
+    "Natriumnitrit / E250",
+    "Natriumnitrit",
+    "E250",
+    "preservative"
+  ],
+  "sodium_phosphate": [
+    "Sodium phosphate",
+    "Natriumphosphat",
+    "phosphate"
+  ],
+  "sodium_phosphate_2": [
+    "Sodium phosphate",
+    "preservative"
+  ],
+  "sodium_phytate": [
+    "Sodium phytate",
+    "Natriumphytat",
+    "chelator"
+  ],
+  "sodium_propionate": [
+    "Sodium propionate",
+    "Natriumpropionat / E281",
+    "preservative"
+  ],
+  "sodium_saccharin": [
+    "Sodium saccharin",
+    "Natriumsaccharin",
+    "artificial_sweetener"
+  ],
+  "sodium_stearoyl_lactylate": [
+    "Sodium stearoyl lactylate",
+    "emulsifiers"
+  ],
+  "sodium_sulfite": [
+    "Sodium sulfite",
+    "Natriumsulfit / E221",
+    "preservative"
+  ],
+  "sodium_tripolyphosphate": [
+    "Sodium tripolyphosphate",
+    "Natriumtripolyphosphat",
+    "phosphate"
+  ],
+  "soluble_corn_fiber": [
+    "Soluble corn fiber",
+    "fillers_&_starches"
+  ],
+  "sorbic_acid": [
+    "Sorbic acid",
+    "Sorbinsäure / E200",
+    "preservative"
+  ],
+  "sorbitol": [
+    "Sorbitol",
+    "Sorbit / E420",
+    "artificial_sweetener"
+  ],
+  "sorbitol_2": [
+    "Sorbitol",
+    "Sorbit",
+    "sugar_alcohol"
+  ],
+  "soy_flour": [
+    "Soy flour",
+    "grain/flour_ingredients"
+  ],
+  "soy_lecithin": [
+    "Soy lecithin",
+    "Sojalecithin",
+    "emulsifier",
+    "Lecithine",
+    "E322"
+  ],
+  "soy_protein_concentrate": [
+    "Soy protein concentrate",
+    "protein"
+  ],
+  "soy_protein_isolate": [
+    "Soy protein isolate",
+    "protein"
+  ],
+  "soy_protein_isolate_2": [
+    "Soy protein isolate",
+    "Sojaproteinisolat",
+    "soy"
+  ],
+  "soybean": [
+    "Soybean",
+    "Sojabohne",
+    "soy",
+    "Sojaöl"
+  ],
+  "soybean_oil": [
+    "Soybean oil",
+    "Sojaöl",
+    "seed_oil"
+  ],
+  "spinach": [
+    "Spinach",
+    "Spinat",
+    "whole_food"
+  ],
+  "sprouted_grain_flour": [
+    "Sprouted grain flour",
+    "grain/flour_ingredients"
+  ],
+  "squalane": [
+    "Squalane",
+    "Squalan",
+    "emollient"
+  ],
+  "stannous_fluoride": [
+    "Stannous fluoride",
+    "Zinnfluorid",
+    "fluoride"
+  ],
+  "stearyl_alcohol": [
+    "Stearyl alcohol",
+    "Stearylalkohol",
+    "fatty_alcohol"
+  ],
+  "stevia_extract": [
+    "Stevia extract",
+    "Stevia-Extrakt",
+    "sweetener"
+  ],
+  "stevia_leaf_extract": [
+    "Stevia leaf extract",
+    "sweeteners"
+  ],
+  "strawberries": [
+    "Strawberries",
+    "Erdbeeren",
+    "whole_food"
+  ],
+  "sucralose": [
+    "Sucralose",
+    "artificial_sweetener",
+    "E955"
+  ],
+  "sulfites": [
+    "Sulfites",
+    "preservative"
+  ],
+  "sulfur_dioxide": [
+    "Sulfur dioxide",
+    "Schwefeldioxid / E220",
+    "preservative"
+  ],
+  "sulphites": [
+    "Sulphites",
+    "Sulfite",
+    "preservative"
+  ],
+  "sunflower_oil": [
+    "Sunflower oil",
+    "Sonnenblumenöl",
+    "seed_oil",
+    "Sonnenblumenlecithin",
+    "Lecithine",
+    "E322"
+  ],
+  "sweet_cream": [
+    "Sweet cream",
+    "Süßrahm",
+    "dairy"
+  ],
+  "synthetic_dye_in_detergent": [
+    "Synthetic dye in detergent",
+    "fragrance",
+    "Parfum",
+    "Duftstoff",
+    "Duftstoffe",
+    "Aroma"
+  ],
+  "synthetic_musk": [
+    "Synthetic musk",
+    "synthetischer Moschus",
+    "fragrance",
+    "Parfum",
+    "Duftstoff",
+    "Duftstoffe",
+    "Aroma"
+  ],
+  "talc": [
+    "Talc",
+    "Talkum",
+    "anti_caking"
+  ],
+  "tapioca_flour": [
+    "Tapioca flour",
+    "Tapiokamehl",
+    "starch"
+  ],
+  "tapioca_maltodextrin": [
+    "Tapioca maltodextrin",
+    "Tapioka-Maltodextrin",
+    "starch"
+  ],
+  "tapioca_starch": [
+    "Tapioca starch",
+    "Tapiokastärke",
+    "starch"
+  ],
+  "tara_gum": [
+    "Tara gum",
+    "gum"
+  ],
+  "tartaric_acid": [
+    "Tartaric acid",
+    "Weinsäure",
+    "acid"
+  ],
+  "tbhq": [
+    "TBHQ",
+    "preservative"
+  ],
+  "tea": [
+    "TEA",
+    "Triethanolamin",
+    "amine"
+  ],
+  "teflon": [
+    "Teflon",
+    "PTFE / Teflon",
+    "pfas"
+  ],
+  "tertiary_butylhydroquinone": [
+    "Tertiary butylhydroquinone",
+    "tert-Butylhydrochinon",
+    "preservative"
+  ],
+  "tertiary_butylhydroquinone_2": [
+    "Tertiary butylhydroquinone",
+    "preservative"
+  ],
+  "tetrahexyldecyl_ascorbate": [
+    "Tetrahexyldecyl ascorbate",
+    "Tetrahexyldecylascorbat",
+    "vitamin"
+  ],
+  "tetrasodium_edta": [
+    "Tetrasodium EDTA",
+    "Tetranatrium-EDTA",
+    "chelator"
+  ],
+  "textured_soy_protein": [
+    "Textured soy protein",
+    "texturiertes Sojaprotein",
+    "soy"
+  ],
+  "textured_vegetable_protein": [
+    "Textured vegetable protein",
+    "protein"
+  ],
+  "thyme": [
+    "Thyme",
+    "Thymian",
+    "spice"
+  ],
+  "titanium_dioxide": [
+    "Titanium dioxide",
+    "Titandioxid / E171 / CI 77891",
+    "Titandioxid",
+    "E171",
+    "CI 77891",
+    "colorant"
+  ],
+  "titanium_dioxide_in_cosmetics": [
+    "Titanium dioxide in cosmetics",
+    "Titandioxid",
+    "Titandioxid, CI 77891",
+    "personal_care_chemicals"
+  ],
+  "tocopherols": [
+    "Tocopherols",
+    "Tocopherole / Vitamin E",
+    "vitamin"
+  ],
+  "toluene": [
+    "Toluene",
+    "Toluol",
+    "solvent"
+  ],
+  "tomatoes": [
+    "Tomatoes",
+    "Tomaten",
+    "whole_food"
+  ],
+  "tonalide": [
+    "Tonalide",
+    "Tonalid / AHTN",
+    "fragrance",
+    "Parfum",
+    "Duftstoff",
+    "Duftstoffe",
+    "Aroma"
+  ],
+  "tricalcium_phosphate": [
+    "Tricalcium phosphate",
+    "Tricalciumphosphat",
+    "phosphate"
+  ],
+  "tricalcium_phosphate_2": [
+    "Tricalcium phosphate",
+    "preservative"
+  ],
+  "triclocarban": [
+    "Triclocarban",
+    "antimicrobial"
+  ],
+  "triclosan": [
+    "Triclosan",
+    "antimicrobial"
+  ],
+  "trimethicone": [
+    "Trimethicone",
+    "Trimethicon",
+    "silicone"
+  ],
+  "triphenyl_phosphate": [
+    "Triphenyl phosphate",
+    "Triphenylphosphat",
+    "phosphate"
+  ],
+  "trisodium_phosphate": [
+    "Trisodium phosphate",
+    "Trinatriumphosphat",
+    "phosphate"
+  ],
+  "trisodium_phosphate_2": [
+    "Trisodium phosphate",
+    "preservative"
+  ],
+  "turkey": [
+    "Turkey",
+    "Pute",
+    "animal_product"
+  ],
+  "turmeric": [
+    "Turmeric",
+    "Kurkuma",
+    "spice"
+  ],
+  "turmeric_color": [
+    "Turmeric color",
+    "artificial_color"
+  ],
+  "unbleached_wheat_flour": [
+    "Unbleached wheat flour",
+    "grain/flour_ingredients"
+  ],
+  "unrefined_red_palm_oil": [
+    "Unrefined red palm oil",
+    "oils_&_fats"
+  ],
+  "urea": [
+    "Urea",
+    "Harnstoff / Urea",
+    "active"
+  ],
+  "vanilla_extract": [
+    "Vanilla extract",
+    "Vanilleextrakt",
+    "flavor"
+  ],
+  "vanillin": [
+    "Vanillin",
+    "flavor"
+  ],
+  "vegetable_juice_color": [
+    "Vegetable juice color",
+    "artificial_color"
+  ],
+  "vegetable_oil": [
+    "Vegetable oil",
+    "Pflanzenöl",
+    "seed_oil"
+  ],
+  "vegetable_oil_blend": [
+    "Vegetable oil blend",
+    "oils_&_fats"
+  ],
+  "vegetable_shortening": [
+    "Vegetable shortening",
+    "Pflanzenfett / Backfett",
+    "hydrogenated_oil"
+  ],
+  "vital_wheat_gluten": [
+    "Vital wheat gluten",
+    "grain/flour_ingredients"
+  ],
+  "vitamin_c": [
+    "Vitamin C",
+    "vitamin"
+  ],
+  "walnuts": [
+    "Walnuts",
+    "Walnüsse",
+    "whole_food"
+  ],
+  "water": [
+    "Water",
+    "Wasser",
+    "clean"
+  ],
+  "wheat": [
+    "Wheat",
+    "Weizen",
+    "grain"
+  ],
+  "wheat_flour": [
+    "Wheat flour",
+    "Weizenmehl",
+    "grain"
+  ],
+  "whey_protein": [
+    "Whey protein",
+    "Molkenprotein",
+    "protein"
+  ],
+  "whey_protein_concentrate": [
+    "Whey protein concentrate",
+    "protein"
+  ],
+  "whey_protein_isolate": [
+    "Whey protein isolate",
+    "protein"
+  ],
+  "white_sugar": [
+    "White sugar",
+    "sweeteners"
+  ],
+  "whole_milk": [
+    "Whole milk",
+    "Vollmilch",
+    "dairy"
+  ],
+  "whole_wheat_flour": [
+    "Whole wheat flour",
+    "grain/flour_ingredients"
+  ],
+  "xanthan_gum": [
+    "Xanthan gum",
+    "Xanthan / E415",
+    "Xanthan",
+    "E415",
+    "gum"
+  ],
+  "xylitol": [
+    "Xylitol",
+    "Xylit / Birkenzucker",
+    "sugar_alcohol"
+  ],
+  "yeast_extract": [
+    "Yeast extract",
+    "Hefeextrakt",
+    "flavor_enhancer"
+  ],
+  "yellow_5": [
+    "Yellow 5",
+    "Tartrazin / E102 / Yellow 5",
+    "artificial_color"
+  ],
+  "yellow_6": [
+    "Yellow 6",
+    "Gelborange S / E110 / Yellow 6",
+    "artificial_color"
+  ],
+  "zinc_citrate": [
+    "Zinc citrate",
+    "Zinkcitrat",
+    "mineral"
+  ],
+  "zinc_oxide": [
+    "Zinc oxide",
+    "Zinkoxid",
+    "uv_filter",
+    "Oxybenzon",
+    "Benzophenone-3",
+    "Octinoxat",
+    "Homosalat",
+    "Octocrylen",
+    "Avobenzon"
+  ],
+  "zinc_pca": [
+    "Zinc PCA",
+    "Zink PCA",
+    "active"
+  ],
+  "zinc_pyrithione": [
+    "Zinc pyrithione",
+    "Zinkpyrithion",
+    "antimicrobial"
+  ]
+}

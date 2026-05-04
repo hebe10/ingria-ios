@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyCMabnmgdyRa1DzDtwd5yLXC_y2W3pILZI</string>
+	<key>BUNDLE_ID</key>
+	<string>hebe.INGRIA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>487644833116</string>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:487644833116:ios:d752f774d6575efa4acd99</string>
+	<key>IS_ADS_ENABLED</key>
+	<false/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>PROJECT_ID</key>
+	<string>ingria-e7cb7</string>
+	<key>STORAGE_BUCKET</key>
+	<string>ingria-e7cb7.firebasestorage.app</string>
+</dict>
+</plist>
