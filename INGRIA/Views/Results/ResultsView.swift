@@ -142,7 +142,7 @@ struct ResultsView: View {
                         }
                     }
                 } label: {
-                    Text(didSaveToList ? "Saved" : "Save Product")
+                    Text(saveButtonTitle)
                         .font(.system(size: 14, weight: .bold))
                         .foregroundStyle(.white)
                         .frame(maxWidth: .infinity, minHeight: 44)
@@ -152,7 +152,7 @@ struct ResultsView: View {
 
                 Button {
                     Task {
-                        await viewModel.submitIngredientCorrection(audit)
+                        await viewModel.reportAuditIssue(audit)
                         withAnimation(.snappy(duration: 0.2)) {
                             didReportIssue = true
                         }
@@ -560,9 +560,16 @@ struct ResultsView: View {
 
     private var reportButtonTitle: String {
         if didReportIssue {
-            return "Reported"
+            return viewModel.appLanguage == .german ? "Gemeldet" : "Reported"
         }
-        return "Report Ingredient Issue"
+        return viewModel.appLanguage == .german ? "Melden" : "Report"
+    }
+
+    private var saveButtonTitle: String {
+        if didSaveToList {
+            return viewModel.appLanguage == .german ? "Gespeichert" : "Saved"
+        }
+        return viewModel.appLanguage == .german ? "Speichern" : "Save"
     }
 
     private var deduplicatedFlaggedIngredients: [AuditedIngredient] {

@@ -143,13 +143,13 @@ private struct HomeCopy {
     }
 
     var headline: String {
-        language == .german ? "Kein Kompromiss." : "No Compromise."
+        language == .german ? "Kein Kompromiss. Nur Klarheit." : "No Compromise. Just Clarity."
     }
 
     var subtitle: String {
         language == .german
-            ? "Strenge Zutatenprüfung\nfür Lebensmittel und\nKörperpflege."
-            : "No compromise ingredient\nscanning for food and\npersonal care."
+            ? "Informationsbasierte Zutatenprüfung\nfür Lebensmittel und\nKörperpflege."
+            : "Information-based ingredient\nscreening for food and\npersonal care."
     }
 
     var tags: [String] {

@@ -74,7 +74,6 @@ struct ListsView: View {
                 .accessibilityLabel("Admin review")
 
                 Button {
-                    print("+ pressed")
                     showCreateSheet()
                 } label: {
                     Image(systemName: "plus")
@@ -110,7 +109,6 @@ struct ListsView: View {
             }
 
             Button {
-                print("Create a list pressed")
                 showCreateSheet()
             } label: {
                 HStack(spacing: 10) {

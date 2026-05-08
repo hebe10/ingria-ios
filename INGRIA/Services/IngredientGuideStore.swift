@@ -5,7 +5,21 @@ struct IngredientGuideStore {
     private(set) var sortedEntries: [IngredientGuideEntry] = []
     private(set) var aliases: [String: [String]] = [:]
 
-    mutating func load() throws {
+    nonisolated init() {}
+
+    nonisolated static func loadFromBundle() throws -> IngredientGuideStore {
+        var store = IngredientGuideStore()
+        try store.load()
+        return store
+    }
+
+    nonisolated static func loadFromBundleInBackground() async throws -> IngredientGuideStore {
+        try await Task.detached(priority: .userInitiated) {
+            try loadFromBundle()
+        }.value
+    }
+
+    nonisolated mutating func load() throws {
         let decoder = JSONDecoder()
         let foodURL = try Self.url(named: "ingredients.food", ext: "json")
         let beautyURL = try Self.url(named: "ingredients.beauty", ext: "json")
@@ -145,7 +159,7 @@ struct IngredientGuideStore {
         }
     }
 
-    private static func url(named: String, ext: String) throws -> URL {
+    private nonisolated static func url(named: String, ext: String) throws -> URL {
         if let url = Bundle.main.url(forResource: named, withExtension: ext) {
             return url
         }

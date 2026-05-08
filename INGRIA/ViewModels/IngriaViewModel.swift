@@ -36,14 +36,14 @@ final class IngriaViewModel: ObservableObject {
     private var guideStore = IngredientGuideStore()
     private let searchService = ProductSearchService()
     private let supabaseManager = SupabaseManager.shared
-    private let supabaseService = SupabaseService.shared
     private var auditor: ProductAuditor?
     private var auditCache: [String: ProductAudit] = [:]
 
     func bootstrap() async {
         do {
-            try guideStore.load()
-            auditor = ProductAuditor(guide: guideStore)
+            let loadedGuideStore = try await IngredientGuideStore.loadFromBundleInBackground()
+            guideStore = loadedGuideStore
+            auditor = ProductAuditor(guide: loadedGuideStore)
         } catch {
             print("Failed to load ingredient guide: \(error)")
         }
@@ -73,16 +73,16 @@ final class IngriaViewModel: ObservableObject {
         let value = (query ?? searchQuery).trimmingCharacters(in: .whitespacesAndNewlines)
         guard !value.isEmpty else {
             searchResults = []
-            searchStateText = "Type to search."
+            searchStateText = localized(de: "Suchbegriff eingeben.", en: "Type to search.")
             return
         }
 
         isSearching = true
-        searchStateText = "Searching..."
+        searchStateText = localized(de: "Suche...", en: "Searching...")
         do {
             async let supabaseMatches = supabaseManager.searchProducts(
                 query: value,
-                filters: FirebaseProductFilters(
+                filters: ProductSearchFilters(
                     result: searchFilter.status,
                     store: selectedStoreFilter,
                     category: categoryFilter,
@@ -96,14 +96,14 @@ final class IngriaViewModel: ObservableObject {
             let reviewedMatches = (try? await supabaseMatches) ?? []
             let merged = try await mergeSearchResults(reviewedMatches, publicMatches)
             searchResults = applyLocalSearchFilters(merged)
-            searchStateText = searchResults.isEmpty ? "Nothing found." : "\(searchResults.count) matches"
+            searchStateText = searchResults.isEmpty ? localized(de: "Nichts gefunden.", en: "Nothing found.") : localized(de: "\(searchResults.count) Treffer", en: "\(searchResults.count) matches")
         } catch {
             do {
                 searchResults = applyLocalSearchFilters(try await searchService.search(query: value))
-                searchStateText = searchResults.isEmpty ? "Nothing found." : "\(searchResults.count) matches"
+                searchStateText = searchResults.isEmpty ? localized(de: "Nichts gefunden.", en: "Nothing found.") : localized(de: "\(searchResults.count) Treffer", en: "\(searchResults.count) matches")
             } catch {
                 searchResults = []
-                searchStateText = "Search failed."
+                searchStateText = localized(de: "Suche fehlgeschlagen.", en: "Search failed.")
             }
         }
         isSearching = false
@@ -173,14 +173,14 @@ final class IngriaViewModel: ObservableObject {
         let barcode = BarcodeValueNormalizer.normalize(scanBarcode)
         scanBarcode = barcode
         guard barcode.count >= 8 else {
-            scanStateText = "Enter a valid EAN/GTIN barcode."
+            scanStateText = localized(de: "Bitte einen gültigen EAN/GTIN-Barcode eingeben.", en: "Enter a valid EAN/GTIN barcode.")
             return
         }
 
-        scanStateText = "Checking INGRIA database..."
+        scanStateText = localized(de: "INGRIA-Datenbank wird geprüft...", en: "Checking INGRIA database...")
         if let cached = auditCache[barcode] {
             showAudit(cached)
-            scanStateText = "Returned stored result from local cache."
+            scanStateText = localized(de: "Gespeichertes Ergebnis aus dem lokalen Cache geladen.", en: "Returned stored result from local cache.")
             return
         }
 
@@ -189,15 +189,15 @@ final class IngriaViewModel: ObservableObject {
                 let audit = auditFromSupabaseRecord(supabaseProduct)
                 auditCache[barcode] = audit
                 showAudit(audit)
-                scanStateText = "Loaded INGRIA reviewed result from Supabase."
+                scanStateText = localized(de: "INGRIA-geprüftes Ergebnis aus Supabase geladen.", en: "Loaded INGRIA reviewed result from Supabase.")
                 await saveScanLog(audit, scanSource: "barcode_supabase")
                 return
             }
         } catch {
-            scanStateText = "Supabase unavailable. Checking public product data..."
+            scanStateText = localized(de: "Supabase nicht erreichbar. Öffentliche Produktdaten werden geprüft...", en: "Supabase unavailable. Checking public product data...")
         }
 
-        scanStateText = "Calling Open Food Facts / Beauty Facts..."
+        scanStateText = localized(de: "Open Food Facts / Beauty Facts wird geprüft...", en: "Calling Open Food Facts / Beauty Facts...")
         do {
             guard let raw = try await searchService.fetchProduct(barcode: barcode), let auditor else {
                 let audit = missingIngredientAudit(
@@ -207,8 +207,8 @@ final class IngriaViewModel: ObservableObject {
                     source: "Barcode lookup"
                 )
                 showAudit(audit)
-                scanStateText = "Product not found. Created a pending INGRIA submission."
-                await saveMissingSubmission(FirebaseSubmissionDraft(
+                scanStateText = localized(de: "Produkt nicht gefunden. Ein INGRIA-Prüfeintrag wurde erstellt.", en: "Product not found. Created a pending INGRIA submission.")
+                await saveMissingSubmission(ProductSubmissionDraft(
                     barcode: barcode,
                     productName: audit.productName,
                     brand: audit.brand,
@@ -226,11 +226,13 @@ final class IngriaViewModel: ObservableObject {
             audit.reviewStatus = audit.confidence == .unusableData ? .missingIngredients : .unverifiedSourceData
             auditCache[barcode] = audit
             showAudit(audit)
-            scanStateText = audit.confidence == .unusableData ? "Ingredient data needed. Upload or paste the label." : "Saved scan result to INGRIA database."
+            scanStateText = audit.confidence == .unusableData
+                ? localized(de: "Zutatendaten nötig. Bitte Etikett hochladen oder einfügen.", en: "Ingredient data needed. Upload or paste the label.")
+                : localized(de: "Scan-Ergebnis gespeichert.", en: "Saved scan result.")
             await savePublicProductIfNeeded(audit)
             await saveScanLog(audit, scanSource: "barcode_public_source")
             if audit.confidence == .unusableData {
-                await saveMissingSubmission(FirebaseSubmissionDraft(
+                await saveMissingSubmission(ProductSubmissionDraft(
                     barcode: barcode,
                     productName: audit.productName,
                     brand: audit.brand,
@@ -242,14 +244,14 @@ final class IngriaViewModel: ObservableObject {
                 ))
             }
         } catch {
-            scanStateText = "Lookup failed. Scan the ingredient label instead."
+            scanStateText = localized(de: "Suche fehlgeschlagen. Bitte Zutatenliste scannen.", en: "Lookup failed. Scan the ingredient label instead.")
         }
     }
 
     func auditLabelText() {
         let text = scannedLabelText.trimmingCharacters(in: .whitespacesAndNewlines)
         guard text.count >= 3, let auditor else {
-            scanStateText = "Paste or OCR ingredient text first."
+            scanStateText = localized(de: "Bitte zuerst Zutaten einfügen oder per Foto erkennen.", en: "Paste or OCR ingredient text first.")
             return
         }
 
@@ -257,9 +259,9 @@ final class IngriaViewModel: ObservableObject {
         audit.sourceStatus = .manualEntry
         audit.reviewStatus = .userSubmitted
         showAudit(audit)
-        scanStateText = "Created result from label text and saved a user submission."
+        scanStateText = localized(de: "Ergebnis aus Zutaten erstellt und zur Prüfung vorgemerkt.", en: "Created result from label text and saved a user submission.")
         Task {
-            await saveMissingSubmission(FirebaseSubmissionDraft(
+            await saveMissingSubmission(ProductSubmissionDraft(
                 barcode: scanBarcode,
                 productName: audit.productName,
                 brand: audit.brand,
@@ -287,7 +289,7 @@ final class IngriaViewModel: ObservableObject {
 
         ocrStateText = appLanguage == .german ? "Zutaten werden gelesen…" : "Reading ingredients…"
 
-        let initialPhotoDraft = FirebaseSubmissionDraft(
+        let initialPhotoDraft = ProductSubmissionDraft(
             barcode: resolvedBarcode,
             productName: resolvedProductName,
             brand: resolvedBrand,
@@ -345,7 +347,7 @@ final class IngriaViewModel: ObservableObject {
                 storeAvailability: originalAudit?.storeAvailability ?? []
             )
             showAudit(contextualAudit)
-            await saveMissingSubmission(FirebaseSubmissionDraft(
+            await saveMissingSubmission(ProductSubmissionDraft(
                 barcode: contextualAudit.barcode,
                 productName: contextualAudit.productName,
                 brand: contextualAudit.brand,
@@ -374,7 +376,7 @@ final class IngriaViewModel: ObservableObject {
         let currentAudit = activeAudit
         let barcode = currentAudit?.barcode ?? scanBarcode
         Task {
-            let draft = FirebaseSubmissionDraft(
+            let draft = ProductSubmissionDraft(
                 barcode: barcode,
                 productName: currentAudit?.productName ?? (appLanguage == .german ? "Unbekanntes Produkt" : "Unknown product"),
                 brand: currentAudit?.brand ?? "",
@@ -441,15 +443,14 @@ final class IngriaViewModel: ObservableObject {
 
     func saveProductToSupabase(_ audit: ProductAudit) async {
         saveAuditToList(audit)
-        await supabaseService.saveProduct(data: SavedProductInsert(audit: audit))
     }
 
     func submitIngredientCorrection(_ audit: ProductAudit) async {
-        await supabaseService.submitIngredientCorrection(data: IngredientCorrectionInsert(audit: audit))
+        await reportAuditIssue(audit)
     }
 
     func reportAuditIssue(_ audit: ProductAudit) async {
-        await saveMissingSubmission(FirebaseSubmissionDraft(
+        await saveMissingSubmission(ProductSubmissionDraft(
             barcode: audit.barcode,
             productName: audit.productName,
             brand: audit.brand,
@@ -473,19 +474,25 @@ final class IngriaViewModel: ObservableObject {
         try? await supabaseManager.upsertScannedProductIfNeeded(audit: audit)
     }
 
-    private func saveMissingSubmission(_ draft: FirebaseSubmissionDraft) async {
+    private func saveMissingSubmission(_ draft: ProductSubmissionDraft) async {
         try? await supabaseManager.saveMissingProductSubmission(draft)
     }
 
     private func showAudit(_ audit: ProductAudit) {
+        dismissKeyboard()
         activeAudit = audit
         activeAlternativeState = .none
-        Task {
-            await supabaseService.insertScanHistory(data: ScanHistoryInsert(audit: audit))
-        }
         if !auditHistory.contains(where: { $0.barcode == audit.barcode && !$0.barcode.isEmpty }) {
             auditHistory.insert(audit, at: 0)
         }
+    }
+
+    private func dismissKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+
+    private func localized(de: String, en: String) -> String {
+        appLanguage == .german ? de : en
     }
 
     private func missingIngredientAudit(barcode: String, productName: String, brand: String, source: String) -> ProductAudit {
