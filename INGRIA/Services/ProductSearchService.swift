@@ -263,9 +263,8 @@ struct ProductSearchService {
     }
 
     private static func localSearch(query: String, limit: Int) async -> [ProductSearchItem] {
-        let index = Self.localGermanProductIndex
         return await Task.detached(priority: .userInitiated) {
-            searchLocalGermanProducts(query: query, limit: limit, index: index)
+            searchLocalGermanProducts(query: query, limit: limit, index: localGermanProductIndex)
         }.value
     }
 
@@ -406,7 +405,7 @@ struct ProductSearchService {
         return isGerman ? "\(base):de" : base
     }
 
-    private static let localGermanProducts: [LocalGermanProduct] = {
+    nonisolated private static let localGermanProducts: [LocalGermanProduct] = {
         let decoder = JSONDecoder()
         let url = Bundle.main.url(forResource: "german_products", withExtension: "json")
             ?? Bundle.main.url(forResource: "german_products", withExtension: "json", subdirectory: "Resources")
@@ -414,7 +413,7 @@ struct ProductSearchService {
         return (try? decoder.decode([LocalGermanProduct].self, from: data)) ?? []
     }()
 
-    private static let localGermanProductIndex: [IndexedLocalGermanProduct] = {
+    nonisolated private static let localGermanProductIndex: [IndexedLocalGermanProduct] = {
         localGermanProducts.map { product in
             let name = normalizeValue(product.name)
             let brand = normalizeValue(product.brand)

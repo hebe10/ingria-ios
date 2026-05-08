@@ -94,7 +94,7 @@ final class SupabaseManager {
         return productRecord(from: row, storeAvailability: stores)
     }
 
-    func searchProducts(query: String, filters: FirebaseProductFilters) async throws -> [ProductSearchItem] {
+    func searchProducts(query: String, filters: ProductSearchFilters) async throws -> [ProductSearchItem] {
         try ensureConfigured()
         let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return [] }
@@ -213,7 +213,7 @@ final class SupabaseManager {
         )
     }
 
-    func saveMissingProductSubmission(_ draft: FirebaseSubmissionDraft) async throws {
+    func saveMissingProductSubmission(_ draft: ProductSubmissionDraft) async throws {
         try ensureConfigured()
         let barcode = draft.barcode.isEmpty ? UUID().uuidString : BarcodeValueNormalizer.normalize(draft.barcode)
         let result = draft.resultStatus?.supabaseValue ?? IngredientStatus.insufficientData.supabaseValue
@@ -236,6 +236,16 @@ final class SupabaseManager {
         )
         _ = try await restWrite(
             table: "missing_product_submissions",
+            queryItems: [URLQueryItem(name: "on_conflict", value: "barcode")],
+            method: "POST",
+            body: payload,
+            prefer: "resolution=merge-duplicates,return=minimal"
+        )
+
+        // Keep the optional review queue in sync for admin workflows.
+        // If a project has not created this table yet, the submission above remains the source of truth.
+        _ = try? await restWrite(
+            table: "review_queue",
             queryItems: [URLQueryItem(name: "on_conflict", value: "barcode")],
             method: "POST",
             body: payload,
@@ -294,6 +304,70 @@ final class SupabaseManager {
         return publicURL
     }
 
+    func pendingAdminReviewItems() async throws -> [AdminReviewItem] {
+        try ensureConfigured()
+        let rows: [PendingSubmissionRow] = try await restJSON(
+            table: "missing_product_submissions",
+            queryItems: [
+                URLQueryItem(name: "select", value: "*"),
+                URLQueryItem(name: "order", value: "updated_at.desc"),
+                URLQueryItem(name: "limit", value: "100")
+            ]
+        )
+
+        return rows
+            .filter { row in
+                let status = normalizedSupabaseKey(row.adminReviewStatus ?? "waiting")
+                return !["approved", "rejected"].contains(status)
+            }
+            .map(adminReviewItem)
+    }
+
+    func approveAdminReviewItem(_ item: AdminReviewItem) async throws {
+        try ensureConfigured()
+        let barcode = BarcodeValueNormalizer.normalize(item.barcode)
+        guard !barcode.isEmpty else { throw SupabaseManagerError.missingBarcode }
+
+        let payload = ProductUpsert(
+            barcode: barcode,
+            productName: item.productName,
+            brand: item.brand,
+            brandKey: normalizedSupabaseKey(item.brand),
+            category: item.category,
+            categoryKey: normalizedSupabaseKey(item.category),
+            imageURL: item.frontImageURL?.absoluteString ?? item.ingredientsImageURL?.absoluteString,
+            ingredientsText: item.ingredientsText,
+            cleanedIngredientsText: item.cleanedIngredientsText.isEmpty ? item.ingredientsText : item.cleanedIngredientsText,
+            result: item.resultStatus.supabaseValue,
+            summaryLine: item.summaryLine.isEmpty ? defaultSummary(for: item.resultStatus) : item.summaryLine,
+            source: "INGRIA admin",
+            sourceStatus: ProductSourceStatus.ingriaReviewed.rawValue,
+            reviewStatus: ProductReviewStatus.adminReviewed.rawValue,
+            adminReviewStatus: "approved",
+            flaggedIngredients: item.flaggedIngredientNames,
+            createdFromIosScan: false,
+            updatedAt: nowString()
+        )
+
+        _ = try await restWrite(
+            table: "products",
+            queryItems: [URLQueryItem(name: "on_conflict", value: "barcode")],
+            method: "POST",
+            body: payload,
+            prefer: "resolution=merge-duplicates,return=minimal"
+        )
+
+        try await updateAdminReviewRecords(item: item, adminStatus: "approved", reviewStatus: .adminReviewed)
+    }
+
+    func rejectAdminReviewItem(_ item: AdminReviewItem) async throws {
+        try await updateAdminReviewRecords(item: item, adminStatus: "rejected", reviewStatus: .pending)
+    }
+
+    func markAdminReviewNeedsIngredientData(_ item: AdminReviewItem) async throws {
+        try await updateAdminReviewRecords(item: item, adminStatus: "needs_more_info", reviewStatus: .missingIngredients)
+    }
+
     private func updateSubmissionImage(
         barcode: String,
         purpose: String,
@@ -321,6 +395,14 @@ final class SupabaseManager {
             body: data,
             prefer: "return=minimal"
         )
+
+        _ = try? await restData(
+            table: "review_queue",
+            queryItems: [URLQueryItem(name: "barcode", value: "eq.\(barcode)")],
+            method: "PATCH",
+            body: data,
+            prefer: "return=minimal"
+        )
     }
 
     private func storeAvailability(barcode: String) async throws -> [ProductStoreAvailability] {
@@ -340,6 +422,47 @@ final class SupabaseManager {
                 isOnline: $0.isOnline ?? normalizedSupabaseKey($0.storeName).contains("online")
             )
         }
+    }
+
+    private func updateAdminReviewRecords(
+        item: AdminReviewItem,
+        adminStatus: String,
+        reviewStatus: ProductReviewStatus
+    ) async throws {
+        try ensureConfigured()
+        let barcode = BarcodeValueNormalizer.normalize(item.barcode)
+        guard !barcode.isEmpty else { throw SupabaseManagerError.missingBarcode }
+
+        let patch: [String: StringEncodableValue] = [
+            "admin_review_status": .string(adminStatus),
+            "review_status": .string(reviewStatus.rawValue),
+            "product_name": .string(item.productName),
+            "brand": .string(item.brand),
+            "category": .string(item.category),
+            "ingredients_text": .string(item.ingredientsText),
+            "cleaned_ingredients_text": .string(item.cleanedIngredientsText),
+            "result": .string(item.resultStatus.supabaseValue),
+            "summary_line": .string(item.summaryLine),
+            "note": .string(item.notes),
+            "updated_at": .string(nowString())
+        ]
+        let data = try encoder.encode(patch)
+
+        _ = try await restData(
+            table: "missing_product_submissions",
+            queryItems: [URLQueryItem(name: "barcode", value: "eq.\(barcode)")],
+            method: "PATCH",
+            body: data,
+            prefer: "return=minimal"
+        )
+
+        _ = try? await restData(
+            table: "review_queue",
+            queryItems: [URLQueryItem(name: "barcode", value: "eq.\(barcode)")],
+            method: "PATCH",
+            body: data,
+            prefer: "return=minimal"
+        )
     }
 }
 
@@ -362,6 +485,31 @@ private extension SupabaseManager {
             reviewStatus: ProductReviewStatus(supabaseValue: row.reviewStatus),
             source: nonEmpty(row.source) ?? "Supabase",
             storeAvailability: storeAvailability
+        )
+    }
+
+    func adminReviewItem(from row: PendingSubmissionRow) -> AdminReviewItem {
+        let barcode = row.barcode ?? row.id ?? ""
+        return AdminReviewItem(
+            id: row.id ?? barcode,
+            submissionID: row.id ?? barcode,
+            queueID: "submission_\(barcode)",
+            barcode: barcode,
+            productName: nonEmpty(row.productName) ?? "Unknown product",
+            brand: nonEmpty(row.brand) ?? "Unknown brand",
+            category: nonEmpty(row.category) ?? "unknown",
+            ingredientsText: row.ingredientsText ?? "",
+            resultStatus: IngredientStatus(supabaseValue: row.result ?? "INGREDIENT_DATA_NEEDED"),
+            summaryLine: nonEmpty(row.summaryLine) ?? defaultSummary(for: IngredientStatus(supabaseValue: row.result ?? "INGREDIENT_DATA_NEEDED")),
+            notes: row.note ?? "",
+            adminReviewStatus: row.adminReviewStatus ?? "waiting",
+            sourceStatus: ProductSourceStatus(rawValue: row.sourceStatus ?? "") ?? .userSubmitted,
+            reviewStatus: ProductReviewStatus(supabaseValue: row.reviewStatus),
+            createdAt: parseDate(row.createdAt),
+            frontImageURL: URL(string: row.frontImageURL ?? ""),
+            ingredientsImageURL: URL(string: row.ingredientsImageURL ?? ""),
+            cleanedIngredientsText: row.cleanedIngredientsText ?? "",
+            flaggedIngredientNames: row.flaggedIngredients ?? []
         )
     }
 
@@ -388,6 +536,12 @@ private extension SupabaseManager {
 
     func nowString() -> String {
         isoFormatter.string(from: Date())
+    }
+
+    func parseDate(_ value: String?) -> Date? {
+        guard let value else { return nil }
+        if let date = isoFormatter.date(from: value) { return date }
+        return ISO8601DateFormatter().date(from: value)
     }
 
     func nonEmpty(_ value: String?) -> String? {
@@ -520,6 +674,48 @@ private struct StoreAvailabilityRow: Codable {
         case availabilityStatus = "availability_status"
         case sourceLabel = "source_label"
         case isOnline = "is_online"
+    }
+}
+
+private struct PendingSubmissionRow: Codable {
+    let id: String?
+    let barcode: String?
+    let productName: String?
+    let brand: String?
+    let category: String?
+    let ingredientsText: String?
+    let cleanedIngredientsText: String?
+    let result: String?
+    let summaryLine: String?
+    let sourceStatus: String?
+    let reviewStatus: String?
+    let adminReviewStatus: String?
+    let note: String?
+    let flaggedIngredients: [String]?
+    let frontImageURL: String?
+    let ingredientsImageURL: String?
+    let createdAt: String?
+    let updatedAt: String?
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case barcode
+        case productName = "product_name"
+        case brand
+        case category
+        case ingredientsText = "ingredients_text"
+        case cleanedIngredientsText = "cleaned_ingredients_text"
+        case result
+        case summaryLine = "summary_line"
+        case sourceStatus = "source_status"
+        case reviewStatus = "review_status"
+        case adminReviewStatus = "admin_review_status"
+        case note
+        case flaggedIngredients = "flagged_ingredients"
+        case frontImageURL = "front_image_url"
+        case ingredientsImageURL = "ingredients_image_url"
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
     }
 }
 

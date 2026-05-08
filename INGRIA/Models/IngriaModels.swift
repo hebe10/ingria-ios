@@ -203,6 +203,81 @@ struct ProductStoreAvailability: Identifiable, Codable, Hashable {
     }
 }
 
+struct ProductSearchFilters {
+    var result: IngredientStatus?
+    var store: RetailerTag = .all
+    var category = ""
+    var brand = ""
+    var ingredientConcern = ""
+    var onlineOnly = false
+    var availableNearby = false
+}
+
+struct ProductSubmissionDraft {
+    let barcode: String
+    let productName: String
+    let brand: String
+    let category: String
+    let ingredientsText: String
+    let sourceStatus: ProductSourceStatus
+    let reviewStatus: ProductReviewStatus
+    let note: String
+    let resultStatus: IngredientStatus?
+    let summaryLine: String
+    let cleanedIngredientsText: String
+    let flaggedIngredientNames: [String]
+
+    init(
+        barcode: String,
+        productName: String,
+        brand: String,
+        category: String,
+        ingredientsText: String,
+        sourceStatus: ProductSourceStatus,
+        reviewStatus: ProductReviewStatus,
+        note: String,
+        resultStatus: IngredientStatus? = nil,
+        summaryLine: String = "",
+        cleanedIngredientsText: String = "",
+        flaggedIngredientNames: [String] = []
+    ) {
+        self.barcode = barcode
+        self.productName = productName
+        self.brand = brand
+        self.category = category
+        self.ingredientsText = ingredientsText
+        self.sourceStatus = sourceStatus
+        self.reviewStatus = reviewStatus
+        self.note = note
+        self.resultStatus = resultStatus
+        self.summaryLine = summaryLine
+        self.cleanedIngredientsText = cleanedIngredientsText
+        self.flaggedIngredientNames = flaggedIngredientNames
+    }
+}
+
+struct AdminReviewItem: Identifiable, Hashable {
+    let id: String
+    let submissionID: String
+    let queueID: String
+    var barcode: String
+    var productName: String
+    var brand: String
+    var category: String
+    var ingredientsText: String
+    var resultStatus: IngredientStatus
+    var summaryLine: String
+    var notes: String
+    var adminReviewStatus: String
+    var sourceStatus: ProductSourceStatus
+    var reviewStatus: ProductReviewStatus
+    var createdAt: Date?
+    var frontImageURL: URL?
+    var ingredientsImageURL: URL?
+    var cleanedIngredientsText: String
+    var flaggedIngredientNames: [String]
+}
+
 struct ProductAlternative: Identifiable, Codable, Hashable {
     let id: String
     let originalBarcode: String

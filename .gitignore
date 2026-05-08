@@ -1,2 +1,21 @@
-INGRIA/Resources/food.json
+.DS_Store
+DerivedData/
+build/
+*.log
+_archive/
+
+# Xcode user-local state
+*.xcuserstate
+xcuserdata/
+*.xcuserdata/
+
+# Keep generated package resolution, ignore user UI state.
+!INGRIA.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
+
+# Secrets
+.env
+.env.*
+GoogleService-Info.plist
+
+# Large local product data dumps. Keep local for testing; do not commit to GitHub.
 INGRIA/Resources/food.json

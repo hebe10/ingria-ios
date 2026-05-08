@@ -49,8 +49,7 @@ enum BeautyPendingReviewStatus: String, Codable, Hashable {
 }
 
 enum BeautyLookupResult: Hashable {
-    case firebaseProduct(BeautyProduct)
+    case reviewedProduct(BeautyProduct)
     case importedOpenBeautyFactsProduct(BeautyProduct)
     case pendingReview(status: BeautyPendingReviewStatus, product: BeautyProduct?)
 }
-

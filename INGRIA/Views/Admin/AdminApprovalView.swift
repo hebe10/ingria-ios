@@ -6,9 +6,8 @@ struct AdminApprovalView: View {
     @State private var selectedItem: AdminReviewItem?
     @State private var isLoading = false
     @State private var errorMessage = ""
-    @State private var stopListening: (() -> Void)?
 
-    private let repository = FirebaseProductRepository()
+    private let repository = SupabaseManager.shared
 
     var body: some View {
         NavigationStack {
@@ -63,12 +62,7 @@ struct AdminApprovalView: View {
                 }
             }
             .task {
-                startListening()
                 await loadItems()
-            }
-            .onDisappear {
-                stopListening?()
-                stopListening = nil
             }
             .sheet(item: $selectedItem) { item in
                 AdminReviewEditorView(item: item) {
@@ -86,7 +80,7 @@ struct AdminApprovalView: View {
                 .font(.system(size: 25, weight: .semibold, design: .serif))
                 .italic()
                 .foregroundStyle(Color(hex: "1B4332"))
-            Text("New missing or incomplete scans will appear here from product_submissions and review_queue.")
+            Text("New missing or incomplete scans will appear here from Supabase missing submissions.")
                 .font(.system(size: 14, weight: .medium))
                 .foregroundStyle(IngriaTheme.secondaryText)
                 .multilineTextAlignment(.center)
@@ -104,20 +98,6 @@ struct AdminApprovalView: View {
             errorMessage = "Could not load review queue: \(error.localizedDescription)"
         }
         isLoading = false
-    }
-
-    @MainActor
-    private func startListening() {
-        guard stopListening == nil else { return }
-        isLoading = true
-        stopListening = repository.listenPendingAdminReviewItems { liveItems in
-            items = liveItems
-            isLoading = false
-            errorMessage = ""
-        } onError: { error in
-            errorMessage = "Live review queue failed: \(error.localizedDescription)"
-            isLoading = false
-        }
     }
 }
 
@@ -202,7 +182,7 @@ private struct AdminReviewEditorView: View {
     @State private var message = ""
 
     let onFinished: () async -> Void
-    private let repository = FirebaseProductRepository()
+    private let repository = SupabaseManager.shared
 
     init(item: AdminReviewItem, onFinished: @escaping () async -> Void) {
         _draft = State(initialValue: item)

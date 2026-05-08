@@ -79,6 +79,27 @@ create table if not exists public.missing_product_submissions (
     updated_at timestamptz not null default now()
 );
 
+create table if not exists public.review_queue (
+    barcode text primary key,
+    product_name text not null default '',
+    brand text not null default '',
+    category text not null default 'unknown',
+    ingredients_text text not null default '',
+    cleaned_ingredients_text text not null default '',
+    result text not null default 'INGREDIENT_DATA_NEEDED'
+        check (result in ('CLEAN', 'REVIEW', 'AVOID', 'INGREDIENT_DATA_NEEDED')),
+    summary_line text not null default '',
+    source_status text not null default 'userSubmitted',
+    review_status text not null default 'missingIngredients',
+    admin_review_status text not null default 'waiting',
+    note text not null default '',
+    flagged_ingredients text[] not null default '{}',
+    front_image_url text,
+    ingredients_image_url text,
+    created_at timestamptz not null default now(),
+    updated_at timestamptz not null default now()
+);
+
 create table if not exists public.ingredient_rules (
     id uuid primary key default gen_random_uuid(),
     normalized_key text not null unique,
@@ -105,20 +126,58 @@ create table if not exists public.product_store_availability (
     updated_at timestamptz not null default now()
 );
 
+create table if not exists public.product_alternatives (
+    id uuid primary key default gen_random_uuid(),
+    source_barcode text not null default '',
+    alternative_barcode text not null default '',
+    reason text not null default '',
+    source text not null default 'INGRIA',
+    review_status text not null default 'pending',
+    updated_at timestamptz not null default now()
+);
+
+create table if not exists public.ingredient_alternatives (
+    id uuid primary key default gen_random_uuid(),
+    ingredient_key text not null default '',
+    alternative_name text not null default '',
+    reason text not null default '',
+    source text not null default 'INGRIA',
+    review_status text not null default 'pending',
+    updated_at timestamptz not null default now()
+);
+
+create table if not exists public.user_reports (
+    id uuid primary key default gen_random_uuid(),
+    barcode text not null default '',
+    product_name text not null default '',
+    issue_type text not null default 'product_report',
+    note text not null default '',
+    source text not null default 'ios_app',
+    created_at timestamptz not null default now()
+);
+
 create index if not exists products_brand_key_idx on public.products (brand_key);
 create index if not exists products_category_key_idx on public.products (category_key);
 create index if not exists products_result_idx on public.products (result);
 create index if not exists products_review_status_idx on public.products (review_status);
 create index if not exists scan_logs_barcode_idx on public.scan_logs (barcode);
 create index if not exists missing_product_submissions_admin_status_idx on public.missing_product_submissions (admin_review_status);
+create index if not exists review_queue_admin_status_idx on public.review_queue (admin_review_status);
 create index if not exists ingredient_rules_result_idx on public.ingredient_rules (result);
 create index if not exists product_store_availability_barcode_idx on public.product_store_availability (barcode);
+create index if not exists product_alternatives_source_barcode_idx on public.product_alternatives (source_barcode);
+create index if not exists ingredient_alternatives_key_idx on public.ingredient_alternatives (ingredient_key);
+create index if not exists user_reports_barcode_idx on public.user_reports (barcode);
 
 alter table public.products enable row level security;
 alter table public.scan_logs enable row level security;
 alter table public.missing_product_submissions enable row level security;
+alter table public.review_queue enable row level security;
 alter table public.ingredient_rules enable row level security;
 alter table public.product_store_availability enable row level security;
+alter table public.product_alternatives enable row level security;
+alter table public.ingredient_alternatives enable row level security;
+alter table public.user_reports enable row level security;
 
 drop policy if exists "anon read reviewed products" on public.products;
 create policy "anon read reviewed products"
@@ -158,6 +217,19 @@ to anon
 using (admin_review_status not in ('approved', 'rejected'))
 with check (admin_review_status not in ('approved', 'rejected'));
 
+drop policy if exists "anon submit review queue" on public.review_queue;
+create policy "anon submit review queue"
+on public.review_queue for insert
+to anon
+with check (true);
+
+drop policy if exists "anon update review queue waiting rows" on public.review_queue;
+create policy "anon update review queue waiting rows"
+on public.review_queue for update
+to anon
+using (admin_review_status not in ('approved', 'rejected'))
+with check (admin_review_status not in ('approved', 'rejected'));
+
 drop policy if exists "anon read ingredient rules" on public.ingredient_rules;
 create policy "anon read ingredient rules"
 on public.ingredient_rules for select
@@ -169,6 +241,24 @@ create policy "anon read store availability"
 on public.product_store_availability for select
 to anon
 using (true);
+
+drop policy if exists "anon read product alternatives" on public.product_alternatives;
+create policy "anon read product alternatives"
+on public.product_alternatives for select
+to anon
+using (review_status in ('approved', 'adminReviewed'));
+
+drop policy if exists "anon read ingredient alternatives" on public.ingredient_alternatives;
+create policy "anon read ingredient alternatives"
+on public.ingredient_alternatives for select
+to anon
+using (review_status in ('approved', 'adminReviewed'));
+
+drop policy if exists "anon submit user reports" on public.user_reports;
+create policy "anon submit user reports"
+on public.user_reports for insert
+to anon
+with check (source = 'ios_app');
 
 insert into storage.buckets (id, name, public)
 values ('product-submissions', 'product-submissions', true)
