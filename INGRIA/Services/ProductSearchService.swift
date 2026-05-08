@@ -4,21 +4,31 @@ struct ProductSearchService {
     func search(query: String) async throws -> [ProductSearchItem] {
         let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return [] }
+        let intent = ProductSearchIntent.detect(trimmed)
+        LookupLogger.log("search_start", [
+            "query": trimmed,
+            "intent": intent.rawValue
+        ])
 
-        let localResults = await Self.localSearch(query: trimmed, limit: 16)
+        let localResults = await Self.localSearch(query: trimmed, intent: intent, limit: 16)
 
-        if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: trimmed)), trimmed.count >= 8 {
-            if let local = localResults.first(where: { $0.barcode == trimmed }) {
+        if intent == .barcode {
+            let barcode = BarcodeValueNormalizer.normalize(trimmed)
+            LookupLogger.log("barcode_search", ["barcode": barcode])
+            if let local = localResults.first(where: { $0.barcode == barcode }) {
                 return [local]
             }
-            if let product = try? await fetchProduct(barcode: trimmed) {
+            if let product = try? await fetchProduct(barcode: barcode) {
                 return [ProductSearchItem(
                     id: product.barcode,
                     barcode: product.barcode,
                     name: product.name,
                     brand: product.brand,
                     imageURL: product.imageURL,
-                    category: product.category
+                    category: product.category,
+                    ingredientsText: product.cleanedIngredientsText.isEmpty ? product.ingredientsText : product.cleanedIngredientsText,
+                    sourceStatus: product.source.lowercased().contains("beauty") ? .openBeautyFacts : .openFoodFacts,
+                    matchSource: .barcode
                 )]
             }
         }
@@ -27,8 +37,8 @@ struct ProductSearchService {
         if localResults.count >= 8 {
             merged = []
         } else {
-            async let food = safeSearchFood(query: trimmed)
-            async let beauty = safeSearchBeauty(query: trimmed)
+            async let food = safeSearchFood(query: trimmed, intent: intent)
+            async let beauty = safeSearchBeauty(query: trimmed, intent: intent)
             merged = await food + beauty
         }
 
@@ -42,6 +52,13 @@ struct ProductSearchService {
                 seen.insert(item.barcode)
                 return true
             }
+        LookupLogger.log("search_done", [
+            "query": trimmed,
+            "intent": intent.rawValue,
+            "local_count": "\(localResults.count)",
+            "public_count": "\(merged.count)",
+            "ranked_count": "\(ranked.count)"
+        ])
         let germanResults = ranked.filter { $0.category.contains(":de") }
         return germanResults.isEmpty ? Array(ranked.prefix(12)) : Array(germanResults.prefix(12))
     }
@@ -49,56 +66,81 @@ struct ProductSearchService {
     func localSuggestions(query: String, limit: Int = 5) async -> [ProductSearchItem] {
         let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return [] }
-        return await Self.localSearch(query: trimmed, limit: limit)
+        return await Self.localSearch(query: trimmed, intent: ProductSearchIntent.detect(trimmed), limit: limit)
     }
 
     func fetchProduct(barcode: String) async throws -> RawProduct? {
-        async let foodLookup = fetchProduct(barcode: barcode, category: "food")
-        async let beautyLookup = fetchProduct(barcode: barcode, category: "beauty")
+        let normalizedBarcode = BarcodeValueNormalizer.normalize(barcode)
+        LookupLogger.log("barcode_lookup_start", ["barcode": normalizedBarcode])
+        async let foodLookup = safeFetchProduct(barcode: normalizedBarcode, category: "food")
+        async let beautyLookup = safeFetchProduct(barcode: normalizedBarcode, category: "beauty")
 
-        let food = try await foodLookup
-        let beauty = try await beautyLookup
+        let food = await foodLookup
+        let beauty = await beautyLookup
 
         if let food, food.confidence != .unusableData {
+            LookupLogger.log("barcode_lookup_hit", ["barcode": normalizedBarcode, "source": food.source, "confidence": food.confidence.rawValue])
             return food
         }
         if let beauty {
+            LookupLogger.log("barcode_lookup_hit", ["barcode": normalizedBarcode, "source": beauty.source, "confidence": beauty.confidence.rawValue])
             return beauty
         }
+        LookupLogger.log("barcode_lookup_miss", ["barcode": normalizedBarcode])
         return food
     }
 
-    private func searchFood(query: String) async throws -> [ProductSearchItem] {
-        let directURL = URL(string: "https://de.openfoodfacts.org/api/v2/search?search_terms=\(query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")&countries_tags_en=Germany&page_size=16&fields=code,product_name,brands,image_front_small_url,image_small_url,image_url,countries_tags")!
+    private func searchFood(query: String, intent: ProductSearchIntent) async throws -> [ProductSearchItem] {
+        let encoded = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        let fields = "code,product_name,brands,image_front_small_url,image_small_url,image_url,countries_tags,ingredients_text,ingredients_text_de,ingredients_text_en,ingredients_tags,additives_tags"
+        let directURL = URL(string: "https://de.openfoodfacts.org/api/v2/search?search_terms=\(encoded)&countries_tags_en=Germany&page_size=16&fields=\(fields)")!
         let (data, _) = try await fetchData(from: directURL)
         let decoded = try JSONDecoder().decode(ProductSearchResponse.self, from: data)
         var results: [ProductSearchItem] = decoded.products.compactMap { product in
             let imageString = product.image_url ?? product.image_small_url ?? ""
             guard let code = product.code, let name = product.product_name else { return nil }
+            let ingredientsText = firstNonEmpty([product.ingredients_text_de, product.ingredients_text, product.ingredients_text_en]) ?? ""
+            let matchSource = matchSource(for: query, productName: name, brand: product.brands ?? "", ingredientsText: ingredientsText, barcode: code, intent: intent)
+            guard shouldKeepSearchResult(intent: intent, query: query, matchSource: matchSource, ingredientsText: ingredientsText) else { return nil }
             return ProductSearchItem(
                 id: code,
                 barcode: code,
                 name: name,
                 brand: product.brands ?? "Unknown brand",
                 imageURL: URL(string: imageString),
-                category: germanCategory(base: "food", countries: product.countries_tags)
+                category: germanCategory(base: "food", countries: product.countries_tags),
+                ingredientsText: ingredientsText,
+                ingredientTags: product.ingredients_tags ?? [],
+                additiveTags: product.additives_tags ?? [],
+                sourceStatus: .openFoodFacts,
+                matchSource: matchSource,
+                matchedIngredient: matchSource == .ingredient ? query : nil
             )
         }
 
         do {
-            let fallbackURL = URL(string: "https://world.openfoodfacts.org/api/v2/search?search_terms=\(query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")&countries_tags_en=Germany&page_size=8&fields=code,product_name,brands,image_front_small_url,image_small_url,image_url,countries_tags")!
+            let fallbackURL = URL(string: "https://world.openfoodfacts.org/api/v2/search?search_terms=\(encoded)&countries_tags_en=Germany&page_size=8&fields=\(fields)")!
             let (fallbackData, _) = try await fetchData(from: fallbackURL)
             let fallback = try JSONDecoder().decode(ProductSearchResponse.self, from: fallbackData)
             results += fallback.products.compactMap { product in
                 let imageString = product.image_url ?? product.image_small_url ?? ""
                 guard let code = product.code, let name = product.product_name else { return nil }
+                let ingredientsText = firstNonEmpty([product.ingredients_text_de, product.ingredients_text, product.ingredients_text_en]) ?? ""
+                let matchSource = matchSource(for: query, productName: name, brand: product.brands ?? "", ingredientsText: ingredientsText, barcode: code, intent: intent)
+                guard shouldKeepSearchResult(intent: intent, query: query, matchSource: matchSource, ingredientsText: ingredientsText) else { return nil }
                 return ProductSearchItem(
                     id: code,
                     barcode: code,
                     name: name,
                     brand: product.brands ?? "Unknown brand",
                     imageURL: URL(string: imageString),
-                    category: germanCategory(base: "food", countries: product.countries_tags)
+                    category: germanCategory(base: "food", countries: product.countries_tags),
+                    ingredientsText: ingredientsText,
+                    ingredientTags: product.ingredients_tags ?? [],
+                    additiveTags: product.additives_tags ?? [],
+                    sourceStatus: .openFoodFacts,
+                    matchSource: matchSource,
+                    matchedIngredient: matchSource == .ingredient ? query : nil
                 )
             }
         } catch {
@@ -107,12 +149,13 @@ struct ProductSearchService {
         return results
     }
 
-    private func searchBeauty(query: String) async throws -> [ProductSearchItem] {
+    private func searchBeauty(query: String, intent: ProductSearchIntent) async throws -> [ProductSearchItem] {
         let encoded = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        let fields = "code,product_name,brands,image_front_small_url,image_small_url,image_url,countries_tags,ingredients_text,ingredients_text_de,ingredients_text_en,ingredients_text_fr"
         let endpoints = [
-            "https://de.openbeautyfacts.org/api/v2/search?search_terms=\(encoded)&page_size=14&fields=code,product_name,brands,image_front_small_url,image_small_url,image_url,countries_tags",
-            "https://world.openbeautyfacts.org/api/v2/search?search_terms=\(encoded)&page_size=18&fields=code,product_name,brands,image_front_small_url,image_small_url,image_url,countries_tags",
-            "https://world.openbeautyfacts.org/cgi/search.pl?search_terms=\(encoded)&search_simple=1&action=process&json=1&page_size=18&fields=code,product_name,brands,image_front_small_url,image_small_url,image_url,countries_tags"
+            "https://de.openbeautyfacts.org/api/v2/search?search_terms=\(encoded)&page_size=14&fields=\(fields)",
+            "https://world.openbeautyfacts.org/api/v2/search?search_terms=\(encoded)&page_size=18&fields=\(fields)",
+            "https://world.openbeautyfacts.org/cgi/search.pl?search_terms=\(encoded)&search_simple=1&action=process&json=1&page_size=18&fields=\(fields)"
         ]
 
         var results: [ProductSearchItem] = []
@@ -123,16 +166,25 @@ struct ProductSearchService {
                 let decoded = try JSONDecoder().decode(ProductSearchResponse.self, from: data)
                 results += decoded.products.compactMap {
                     guard let code = $0.code, let name = $0.product_name else { return nil }
+                    let ingredientsText = firstNonEmpty([$0.ingredients_text_de, $0.ingredients_text, $0.ingredients_text_en, $0.ingredients_text_fr]) ?? ""
+                    let matchSource = matchSource(for: query, productName: name, brand: $0.brands ?? "", ingredientsText: ingredientsText, barcode: code, intent: intent)
+                    guard shouldKeepSearchResult(intent: intent, query: query, matchSource: matchSource, ingredientsText: ingredientsText) else { return nil }
                     return ProductSearchItem(
                         id: code,
                         barcode: code,
                         name: name,
                         brand: $0.brands ?? "Unknown brand",
                         imageURL: URL(string: $0.image_url ?? $0.image_small_url ?? ""),
-                        category: germanCategory(base: "beauty", countries: $0.countries_tags)
+                        category: germanCategory(base: "beauty", countries: $0.countries_tags),
+                        ingredientsText: ingredientsText,
+                        sourceStatus: .openBeautyFacts,
+                        matchSource: matchSource,
+                        matchedIngredient: matchSource == .ingredient ? query : nil
                     )
                 }
+                LookupLogger.log("beauty_search_source", ["endpoint": url.host ?? "", "query": query, "count": "\(results.count)"])
             } catch {
+                LookupLogger.log("beauty_search_failed", ["endpoint": url.host ?? "", "query": query, "error": error.localizedDescription])
                 continue
             }
         }
@@ -145,6 +197,15 @@ struct ProductSearchService {
                 seen.insert(item.barcode)
                 return true
             }
+    }
+
+    private func safeFetchProduct(barcode: String, category: String) async -> RawProduct? {
+        do {
+            return try await fetchProduct(barcode: barcode, category: category)
+        } catch {
+            LookupLogger.log("barcode_source_failed", ["barcode": barcode, "category": category, "error": error.localizedDescription])
+            return nil
+        }
     }
 
     private func fetchProduct(barcode: String, category: String) async throws -> RawProduct? {
@@ -163,11 +224,14 @@ struct ProductSearchService {
                 let decoded = try JSONDecoder().decode(ProductLookupResponse.self, from: data)
                 guard decoded.status == 1, let product = decoded.product else { continue }
                 candidates.append(makeRawProduct(from: product, barcode: barcode, category: category))
+                LookupLogger.log("barcode_source_checked", ["barcode": barcode, "source": base, "result": "hit"])
             } catch {
+                LookupLogger.log("barcode_source_checked", ["barcode": barcode, "source": base, "result": "failed", "error": error.localizedDescription])
                 continue
             }
         }
 
+        LookupLogger.log("barcode_source_done", ["barcode": barcode, "category": category, "candidate_count": "\(candidates.count)"])
         return candidates.sorted { productQualityScore($0) > productQualityScore($1) }.first
     }
 
@@ -254,35 +318,61 @@ struct ProductSearchService {
         return hasGermanSignals && extractedIsCloseEnough
     }
 
-    private func safeSearchFood(query: String) async -> [ProductSearchItem] {
-        (try? await searchFood(query: query)) ?? []
+    private func safeSearchFood(query: String, intent: ProductSearchIntent) async -> [ProductSearchItem] {
+        do {
+            let results = try await searchFood(query: query, intent: intent)
+            LookupLogger.log("food_search_done", ["query": query, "intent": intent.rawValue, "count": "\(results.count)"])
+            return results
+        } catch {
+            LookupLogger.log("food_search_failed", ["query": query, "intent": intent.rawValue, "error": error.localizedDescription])
+            return []
+        }
     }
 
-    private func safeSearchBeauty(query: String) async -> [ProductSearchItem] {
-        (try? await searchBeauty(query: query)) ?? []
+    private func safeSearchBeauty(query: String, intent: ProductSearchIntent) async -> [ProductSearchItem] {
+        do {
+            let results = try await searchBeauty(query: query, intent: intent)
+            LookupLogger.log("beauty_search_done", ["query": query, "intent": intent.rawValue, "count": "\(results.count)"])
+            return results
+        } catch {
+            LookupLogger.log("beauty_search_failed", ["query": query, "intent": intent.rawValue, "error": error.localizedDescription])
+            return []
+        }
     }
 
-    private static func localSearch(query: String, limit: Int) async -> [ProductSearchItem] {
+    private static func localSearch(query: String, intent: ProductSearchIntent, limit: Int) async -> [ProductSearchItem] {
         return await Task.detached(priority: .userInitiated) {
-            searchLocalGermanProducts(query: query, limit: limit, index: localGermanProductIndex)
+            searchLocalGermanProducts(query: query, intent: intent, limit: limit, index: localGermanProductIndex)
         }.value
     }
 
     nonisolated private static func searchLocalGermanProducts(
         query: String,
+        intent: ProductSearchIntent,
         limit: Int,
         index: [IndexedLocalGermanProduct]
     ) -> [ProductSearchItem] {
         let normalizedQuery = normalizeValue(query)
         guard normalizedQuery.count >= 2 else { return [] }
         let matches = index.compactMap { indexed -> (ProductSearchItem, Int)? in
-            guard indexed.haystack.contains(normalizedQuery) else { return nil }
+            let matchesIngredient = containsIngredient(indexed.ingredients, query: query)
+            let matchesName = indexed.name.contains(normalizedQuery)
+            let matchesBrand = indexed.brand.contains(normalizedQuery)
+            let matchesBarcode = indexed.product.code == BarcodeValueNormalizer.normalize(query)
+            if intent == .ingredient {
+                guard matchesIngredient else { return nil }
+            } else {
+                guard indexed.haystack.contains(normalizedQuery) || matchesBarcode else { return nil }
+            }
             let score: Int
-            if indexed.name == normalizedQuery || indexed.brand == normalizedQuery { score = 0 }
+            if matchesBarcode { score = 0 }
+            else if matchesIngredient { score = intent == .ingredient ? 0 : 4 }
+            else if indexed.name == normalizedQuery || indexed.brand == normalizedQuery { score = 0 }
             else if indexed.name.hasPrefix(normalizedQuery) || indexed.brand.hasPrefix(normalizedQuery) { score = 1 }
             else if indexed.name.contains(normalizedQuery) || indexed.brand.contains(normalizedQuery) { score = 2 }
             else { score = 5 }
             let product = indexed.product
+            let source = matchesBarcode ? ProductSearchMatchSource.barcode : (matchesIngredient ? .ingredient : (matchesBrand ? .brand : .productName))
             let item = ProductSearchItem(
                 id: product.code,
                 barcode: product.code,
@@ -292,7 +382,10 @@ struct ProductSearchService {
                 category: "\(product.category):de:local",
                 ingredientsText: product.ingredients_text ?? "",
                 ingredientTags: product.ingredients_tags ?? [],
-                additiveTags: product.additives_tags ?? []
+                additiveTags: product.additives_tags ?? [],
+                sourceStatus: .localSeed,
+                matchSource: source,
+                matchedIngredient: source == .ingredient ? query : nil
             )
             return (item, score + (product.ingredients_text?.isEmpty == false ? 0 : 2))
         }
@@ -405,6 +498,81 @@ struct ProductSearchService {
         return isGerman ? "\(base):de" : base
     }
 
+    private func firstNonEmpty(_ values: [String?]) -> String? {
+        values
+            .compactMap { $0?.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .first { !$0.isEmpty }
+    }
+
+    private func matchSource(
+        for query: String,
+        productName: String,
+        brand: String,
+        ingredientsText: String,
+        barcode: String,
+        intent: ProductSearchIntent
+    ) -> ProductSearchMatchSource {
+        if intent == .barcode || BarcodeValueNormalizer.normalize(query) == barcode {
+            return .barcode
+        }
+        if Self.containsIngredient(Self.normalizeValue(ingredientsText), query: query) {
+            return .ingredient
+        }
+
+        let normalizedQuery = Self.normalizeValue(query)
+        let normalizedBrand = Self.normalizeValue(brand)
+        let normalizedName = Self.normalizeValue(productName)
+        if normalizedBrand.contains(normalizedQuery) { return .brand }
+        if normalizedName.contains(normalizedQuery) { return .productName }
+        return .relatedProductName
+    }
+
+    private func shouldKeepSearchResult(
+        intent: ProductSearchIntent,
+        query: String,
+        matchSource: ProductSearchMatchSource,
+        ingredientsText: String
+    ) -> Bool {
+        if intent == .ingredient {
+            return matchSource == .ingredient && Self.containsIngredient(Self.normalizeValue(ingredientsText), query: query)
+        }
+        return true
+    }
+
+    nonisolated private static func containsIngredient(_ normalizedIngredients: String, query: String) -> Bool {
+        let normalizedQuery = normalizeValue(query)
+        guard !normalizedQuery.isEmpty, !normalizedIngredients.isEmpty else { return false }
+        if normalizedIngredients.contains(normalizedQuery) { return true }
+
+        let variants = ingredientQueryVariants(for: normalizedQuery)
+        return variants.contains { !($0.isEmpty) && normalizedIngredients.contains($0) }
+    }
+
+    nonisolated private static func ingredientQueryVariants(for normalizedQuery: String) -> [String] {
+        var variants = Set([normalizedQuery])
+        let synonymGroups: [[String]] = [
+            ["glucose syrup", "glucosesyrup", "glukosesirup", "glukose sirup", "sirop de glucose"],
+            ["maltodextrin", "maltodextrine"],
+            ["sucralose", "sucralose"],
+            ["phenoxyethanol", "phenoxyethanol"],
+            ["parfum", "fragrance", "aroma"],
+            ["aroma", "flavouring", "flavoring", "arome", "arome naturel"],
+            ["palm oil", "palmoil", "palmol", "palm fett", "palmfett", "huile de palme"],
+            ["carrageenan", "carrageen", "e407"],
+            ["alcohol denat", "alcoholdenat", "alcohol denatured"],
+            ["limonene", "limonene"],
+            ["linalool", "linalool"]
+        ]
+
+        for group in synonymGroups {
+            let normalizedGroup = group.map(normalizeValue)
+            if normalizedGroup.contains(normalizedQuery) {
+                variants.formUnion(normalizedGroup)
+            }
+        }
+        return Array(variants)
+    }
+
     nonisolated private static let localGermanProducts: [LocalGermanProduct] = {
         let decoder = JSONDecoder()
         let url = Bundle.main.url(forResource: "german_products", withExtension: "json")
@@ -418,11 +586,13 @@ struct ProductSearchService {
             let name = normalizeValue(product.name)
             let brand = normalizeValue(product.brand)
             let stores = normalizeValue(product.stores ?? "")
+            let ingredients = normalizeValue(product.ingredients_text ?? "")
             return IndexedLocalGermanProduct(
                 product: product,
                 name: name,
                 brand: brand,
-                haystack: "\(name) \(brand) \(stores)"
+                ingredients: ingredients,
+                haystack: "\(name) \(brand) \(stores) \(ingredients)"
             )
         }
     }()
@@ -441,10 +611,23 @@ struct ProductSearchService {
     }()
 }
 
+enum LookupLogger {
+    static func log(_ event: String, _ values: [String: String] = [:]) {
+        #if DEBUG
+        let detail = values
+            .sorted { $0.key < $1.key }
+            .map { "\($0.key)=\($0.value)" }
+            .joined(separator: " ")
+        print("[INGRIA Lookup] \(event)\(detail.isEmpty ? "" : " \(detail)")")
+        #endif
+    }
+}
+
 private struct IndexedLocalGermanProduct: Sendable {
     let product: LocalGermanProduct
     let name: String
     let brand: String
+    let ingredients: String
     let haystack: String
 }
 
@@ -484,6 +667,12 @@ private struct OpenFactsSearchProduct: Decodable {
     let image_url: String?
     let image_small_url: String?
     let countries_tags: [String]?
+    let ingredients_text: String?
+    let ingredients_text_de: String?
+    let ingredients_text_en: String?
+    let ingredients_text_fr: String?
+    let ingredients_tags: [String]?
+    let additives_tags: [String]?
 }
 
 private struct ProductLookupResponse: Decodable {

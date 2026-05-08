@@ -21,7 +21,7 @@ create table if not exists public.products (
     source text not null default 'INGRIA',
     source_status text not null default 'pendingReview',
     review_status text not null default 'pending',
-    admin_review_status text not null default 'waiting',
+    admin_review_status text not null default 'pending_review',
     flagged_ingredients text[] not null default '{}',
     created_from_ios_scan boolean not null default false,
     approved_at timestamptz,
@@ -60,7 +60,7 @@ create table if not exists public.missing_product_submissions (
     summary_line text not null default '',
     source_status text not null default 'userSubmitted',
     review_status text not null default 'missingIngredients',
-    admin_review_status text not null default 'waiting',
+    admin_review_status text not null default 'pending_review',
     note text not null default '',
     flagged_ingredients text[] not null default '{}',
     front_image_url text,
@@ -91,7 +91,7 @@ create table if not exists public.review_queue (
     summary_line text not null default '',
     source_status text not null default 'userSubmitted',
     review_status text not null default 'missingIngredients',
-    admin_review_status text not null default 'waiting',
+    admin_review_status text not null default 'pending_review',
     note text not null default '',
     flagged_ingredients text[] not null default '{}',
     front_image_url text,
@@ -183,7 +183,7 @@ drop policy if exists "anon read reviewed products" on public.products;
 create policy "anon read reviewed products"
 on public.products for select
 to anon
-using (review_status in ('approved', 'adminReviewed') or admin_review_status = 'approved');
+using (review_status in ('approved', 'adminReviewed') or admin_review_status like 'approved%');
 
 drop policy if exists "anon insert scan logs" on public.scan_logs;
 create policy "anon insert scan logs"
@@ -214,8 +214,8 @@ drop policy if exists "anon update own missing product barcode rows" on public.m
 create policy "anon update own missing product barcode rows"
 on public.missing_product_submissions for update
 to anon
-using (admin_review_status not in ('approved', 'rejected'))
-with check (admin_review_status not in ('approved', 'rejected'));
+using (admin_review_status not like 'approved%' and admin_review_status not in ('rejected', 'rejected_unusable'))
+with check (admin_review_status not like 'approved%' and admin_review_status not in ('rejected', 'rejected_unusable'));
 
 drop policy if exists "anon submit review queue" on public.review_queue;
 create policy "anon submit review queue"
@@ -227,8 +227,8 @@ drop policy if exists "anon update review queue waiting rows" on public.review_q
 create policy "anon update review queue waiting rows"
 on public.review_queue for update
 to anon
-using (admin_review_status not in ('approved', 'rejected'))
-with check (admin_review_status not in ('approved', 'rejected'));
+using (admin_review_status not like 'approved%' and admin_review_status not in ('rejected', 'rejected_unusable'))
+with check (admin_review_status not like 'approved%' and admin_review_status not in ('rejected', 'rejected_unusable'));
 
 drop policy if exists "anon read ingredient rules" on public.ingredient_rules;
 create policy "anon read ingredient rules"
