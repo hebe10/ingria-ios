@@ -160,7 +160,7 @@ struct SearchView: View {
                             dismissSearchKeyboard()
                             Task { await viewModel.selectProduct(item) }
                         } label: {
-                            SearchResultRow(item: item)
+                            SearchResultRow(item: item, language: viewModel.appLanguage)
                         }
                         .buttonStyle(.plain)
 
@@ -348,6 +348,7 @@ private struct RecentTypePill: View {
 
 private struct SearchResultRow: View {
     let item: ProductSearchItem
+    let language: AppLanguage
 
     var body: some View {
         HStack(spacing: 14) {
@@ -376,6 +377,23 @@ private struct SearchResultRow: View {
                     .font(.system(size: 14, weight: .medium))
                     .foregroundStyle(IngriaTheme.secondaryText)
                     .lineLimit(1)
+
+                HStack(spacing: 6) {
+                    Text(item.matchSource.title(language: language))
+                        .font(.system(size: 10, weight: .bold))
+                        .foregroundStyle(matchForeground)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(matchBackground)
+                        .clipShape(Capsule())
+
+                    if let matchedIngredient = item.matchedIngredient, item.matchSource == .ingredient {
+                        Text(matchedIngredient)
+                            .font(.system(size: 11, weight: .semibold))
+                            .foregroundStyle(IngriaTheme.secondaryText)
+                            .lineLimit(1)
+                    }
+                }
 
                 if let resultStatus = item.resultStatus {
                     HStack(spacing: 7) {
@@ -406,6 +424,22 @@ private struct SearchResultRow: View {
         .padding(.horizontal, 14)
         .padding(.vertical, 12)
         .contentShape(Rectangle())
+    }
+
+    private var matchForeground: Color {
+        switch item.matchSource {
+        case .ingredient: return Color(hex: "8A1F00")
+        case .barcode: return Color(hex: "1B4332")
+        case .brand, .productName, .relatedProductName: return IngriaTheme.green700
+        }
+    }
+
+    private var matchBackground: Color {
+        switch item.matchSource {
+        case .ingredient: return Color(hex: "FFE0DC")
+        case .barcode: return Color(hex: "D6EAE0")
+        case .brand, .productName, .relatedProductName: return Color(hex: "F4F1EB")
+        }
     }
 }
 

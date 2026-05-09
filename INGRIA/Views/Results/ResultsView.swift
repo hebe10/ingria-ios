@@ -113,6 +113,16 @@ struct ResultsView: View {
                     .foregroundStyle(IngriaTheme.ink.opacity(0.82))
                     .fixedSize(horizontal: false, vertical: true)
 
+                if audit.reviewStatus == .userSubmitted, audit.confidence == .extractedFromText {
+                    Text(viewModel.appLanguage == .german ? "Foto-/OCR-Ergebnis — noch nicht manuell bestätigt." : "Photo/OCR-assisted result — not yet manually verified.")
+                        .font(.system(size: 12, weight: .bold))
+                        .foregroundStyle(IngriaTheme.watch)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 7)
+                        .background(IngriaTheme.watchSoft)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                }
+
                 Text(viewModel.appLanguage == .german ? "Zutaten" : "Ingredients")
                     .font(.system(size: 17, weight: .bold))
                     .foregroundStyle(statusColor(audit.finalStatus))

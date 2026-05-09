@@ -142,6 +142,63 @@ enum ProductCategoryKind: String, Codable, Hashable {
     case unknown
 }
 
+enum ProductSearchIntent: String, Hashable {
+    case barcode
+    case ingredient
+    case product
+
+    static func detect(_ query: String) -> ProductSearchIntent {
+        let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
+        let digits = trimmed.filter(\.isNumber)
+        if digits.count >= 8, Double(digits.count) / Double(max(trimmed.count, 1)) > 0.72 {
+            return .barcode
+        }
+
+        let normalized = IngredientExtractor.normalize(trimmed)
+        guard normalized.count >= 3 else { return .product }
+
+        let ingredientSignals = [
+            "sucralose", "maltodextrin", "phenoxyethanol", "parfum", "fragrance",
+            "aroma", "glucosesyrup", "glucose syrup", "glukosesirup", "carrageenan",
+            "carrageen", "e407", "palmol", "palmoil", "palm oil", "rapsol",
+            "sonnenblumenol", "aspartam", "aspartame", "acesulfam", "vanillin",
+            "limonene", "linalool", "alcohol denat", "alcoholdenat", "sodiumlaurethsulfate",
+            "sodium lauryl sulfate", "dimethicone", "peg", "sorbit", "dextrose"
+        ]
+        if ingredientSignals.contains(where: { signal in
+            normalized == IngredientExtractor.normalize(signal)
+            || normalized.contains(IngredientExtractor.normalize(signal))
+        }) {
+            return .ingredient
+        }
+
+        return .product
+    }
+}
+
+enum ProductSearchMatchSource: String, Hashable {
+    case productName
+    case brand
+    case barcode
+    case ingredient
+    case relatedProductName
+
+    func title(language: AppLanguage) -> String {
+        switch self {
+        case .productName:
+            return language == .german ? "Produktname" : "Product name match"
+        case .brand:
+            return language == .german ? "Marke" : "Brand match"
+        case .barcode:
+            return language == .german ? "Barcode" : "Barcode match"
+        case .ingredient:
+            return language == .german ? "Zutat" : "Ingredient match"
+        case .relatedProductName:
+            return language == .german ? "Ähnlicher Produktname" : "Related product name match"
+        }
+    }
+}
+
 struct IngredientGuideEntry: Codable, Identifiable, Hashable {
     let id: String
     let name: String
@@ -186,6 +243,8 @@ struct ProductSearchItem: Identifiable, Hashable {
     var sourceStatus: ProductSourceStatus = .openFoodFacts
     var reviewStatus: ProductReviewStatus = .unverifiedSourceData
     var storeAvailability: [ProductStoreAvailability] = []
+    var matchSource: ProductSearchMatchSource = .productName
+    var matchedIngredient: String? = nil
 }
 
 struct ProductStoreAvailability: Identifiable, Codable, Hashable {

@@ -94,10 +94,11 @@ final class SupabaseManager {
         return productRecord(from: row, storeAvailability: stores)
     }
 
-    func searchProducts(query: String, filters: ProductSearchFilters) async throws -> [ProductSearchItem] {
+    func searchProducts(query: String, filters: ProductSearchFilters, intent: ProductSearchIntent) async throws -> [ProductSearchItem] {
         try ensureConfigured()
         let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return [] }
+        LookupLogger.log("supabase_search_start", ["query": trimmed, "intent": intent.rawValue])
 
         var queryItems = [
             URLQueryItem(name: "select", value: "*"),
@@ -116,23 +117,40 @@ final class SupabaseManager {
         }
 
         let safeQuery = trimmed.replacingOccurrences(of: ",", with: " ")
-        queryItems.append(URLQueryItem(
-            name: "or",
-            value: "(product_name.ilike.*\(safeQuery)*,brand.ilike.*\(safeQuery)*,ingredients_text.ilike.*\(safeQuery)*)"
-        ))
+        switch intent {
+        case .barcode:
+            queryItems.append(URLQueryItem(name: "barcode", value: "eq.\(BarcodeValueNormalizer.normalize(trimmed))"))
+        case .ingredient:
+            queryItems.append(URLQueryItem(name: "ingredients_text", value: "ilike.*\(safeQuery)*"))
+        case .product:
+            queryItems.append(URLQueryItem(
+                name: "or",
+                value: "(product_name.ilike.*\(safeQuery)*,brand.ilike.*\(safeQuery)*)"
+            ))
+        }
 
         let rows: [ProductRow] = try await restJSON(table: "products", queryItems: queryItems)
+        LookupLogger.log("supabase_search_rows", ["query": trimmed, "intent": intent.rawValue, "count": "\(rows.count)"])
         let concernKey = normalizedSupabaseKey(filters.ingredientConcern)
         let items = rows.compactMap { row -> ProductSearchItem? in
             guard row.isTrusted else { return nil }
+            let ingredientsText = row.ingredientsText ?? ""
+            if intent == .ingredient, !ingredientTextContains(ingredientsText, query: trimmed) {
+                return nil
+            }
             let haystack = normalizedSupabaseKey([
                 row.productName ?? "",
                 row.brand ?? "",
                 row.category ?? "",
-                row.ingredientsText ?? ""
+                ingredientsText
             ].joined(separator: " "))
             guard concernKey.isEmpty || haystack.contains(concernKey) else { return nil }
             let record = productRecord(from: row, storeAvailability: row.storeAvailability ?? [])
+            let matchSource = searchMatchSource(
+                row: row,
+                query: trimmed,
+                intent: intent
+            )
             return ProductSearchItem(
                 id: record.barcode,
                 barcode: record.barcode,
@@ -145,7 +163,9 @@ final class SupabaseManager {
                 resultReason: record.summaryLine,
                 sourceStatus: record.sourceStatus,
                 reviewStatus: record.reviewStatus,
-                storeAvailability: record.storeAvailability
+                storeAvailability: record.storeAvailability,
+                matchSource: matchSource,
+                matchedIngredient: matchSource == .ingredient ? trimmed : nil
             )
         }
 
@@ -199,7 +219,7 @@ final class SupabaseManager {
             source: audit.source,
             sourceStatus: audit.sourceStatus.rawValue,
             reviewStatus: reviewStatus.rawValue,
-            adminReviewStatus: "waiting",
+            adminReviewStatus: "pending_review",
             flaggedIngredients: audit.flaggedIngredients.map(\.name),
             createdFromIosScan: true,
             updatedAt: nowString()
@@ -228,7 +248,7 @@ final class SupabaseManager {
             summaryLine: draft.summaryLine.isEmpty ? defaultSummary(for: draft.resultStatus ?? .insufficientData) : draft.summaryLine,
             sourceStatus: draft.sourceStatus.rawValue,
             reviewStatus: draft.reviewStatus.rawValue,
-            adminReviewStatus: "waiting",
+            adminReviewStatus: "pending_review",
             note: draft.note,
             flaggedIngredients: draft.flaggedIngredientNames,
             createdAt: nowString(),
@@ -258,8 +278,12 @@ final class SupabaseManager {
         try ensureConfigured()
         let barcode = BarcodeValueNormalizer.normalize(rawBarcode)
         guard !barcode.isEmpty else { throw SupabaseManagerError.missingBarcode }
-        guard let data = image.jpegData(compressionQuality: 0.78) else {
+        let uploadImage = image.resizedForSubmission(maxDimension: 1600)
+        guard var data = uploadImage.jpegData(compressionQuality: 0.72) else {
             throw SupabaseManagerError.imageEncodingFailed
+        }
+        if data.count > 4_000_000, let smaller = uploadImage.jpegData(compressionQuality: 0.52) {
+            data = smaller
         }
 
         let safePurpose = purpose.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? "image" : purpose
@@ -317,8 +341,8 @@ final class SupabaseManager {
 
         return rows
             .filter { row in
-                let status = normalizedSupabaseKey(row.adminReviewStatus ?? "waiting")
-                return !["approved", "rejected"].contains(status)
+                let status = normalizedSupabaseKey(row.adminReviewStatus ?? "pending_review")
+                return !status.hasPrefix("approved") && status != "rejected" && status != "rejected_unusable"
             }
             .map(adminReviewItem)
     }
@@ -343,7 +367,7 @@ final class SupabaseManager {
             source: "INGRIA admin",
             sourceStatus: ProductSourceStatus.ingriaReviewed.rawValue,
             reviewStatus: ProductReviewStatus.adminReviewed.rawValue,
-            adminReviewStatus: "approved",
+            adminReviewStatus: adminStatusForApproved(result: item.resultStatus),
             flaggedIngredients: item.flaggedIngredientNames,
             createdFromIosScan: false,
             updatedAt: nowString()
@@ -357,11 +381,11 @@ final class SupabaseManager {
             prefer: "resolution=merge-duplicates,return=minimal"
         )
 
-        try await updateAdminReviewRecords(item: item, adminStatus: "approved", reviewStatus: .adminReviewed)
+        try await updateAdminReviewRecords(item: item, adminStatus: adminStatusForApproved(result: item.resultStatus), reviewStatus: .adminReviewed)
     }
 
     func rejectAdminReviewItem(_ item: AdminReviewItem) async throws {
-        try await updateAdminReviewRecords(item: item, adminStatus: "rejected", reviewStatus: .pending)
+        try await updateAdminReviewRecords(item: item, adminStatus: "rejected_unusable", reviewStatus: .pending)
     }
 
     func markAdminReviewNeedsIngredientData(_ item: AdminReviewItem) async throws {
@@ -377,7 +401,7 @@ final class SupabaseManager {
     ) async throws {
         let payload = SubmissionImagePatch(
             barcode: barcode,
-            adminReviewStatus: "waiting",
+            adminReviewStatus: "pending_review",
             reviewStatus: ProductReviewStatus.missingIngredients.rawValue,
             imageURL: imageURL,
             storagePath: storagePath,
@@ -502,7 +526,7 @@ private extension SupabaseManager {
             resultStatus: IngredientStatus(supabaseValue: row.result ?? "INGREDIENT_DATA_NEEDED"),
             summaryLine: nonEmpty(row.summaryLine) ?? defaultSummary(for: IngredientStatus(supabaseValue: row.result ?? "INGREDIENT_DATA_NEEDED")),
             notes: row.note ?? "",
-            adminReviewStatus: row.adminReviewStatus ?? "waiting",
+            adminReviewStatus: row.adminReviewStatus ?? "pending_review",
             sourceStatus: ProductSourceStatus(rawValue: row.sourceStatus ?? "") ?? .userSubmitted,
             reviewStatus: ProductReviewStatus(supabaseValue: row.reviewStatus),
             createdAt: parseDate(row.createdAt),
@@ -521,6 +545,49 @@ private extension SupabaseManager {
         return .ingriaReviewed
     }
 
+    func searchMatchSource(row: ProductRow, query: String, intent: ProductSearchIntent) -> ProductSearchMatchSource {
+        switch intent {
+        case .barcode:
+            return .barcode
+        case .ingredient:
+            return .ingredient
+        case .product:
+            let queryKey = normalizedSupabaseKey(query)
+            if normalizedSupabaseKey(row.brand ?? "").contains(queryKey) {
+                return .brand
+            }
+            if normalizedSupabaseKey(row.productName ?? "").contains(queryKey) {
+                return .productName
+            }
+            return .relatedProductName
+        }
+    }
+
+    func ingredientTextContains(_ text: String, query: String) -> Bool {
+        let normalizedText = normalizedSupabaseKey(text)
+        let normalizedQuery = normalizedSupabaseKey(query)
+        guard !normalizedQuery.isEmpty, !normalizedText.isEmpty else { return false }
+        if normalizedText.contains(normalizedQuery) { return true }
+
+        let groups = [
+            ["glucose syrup", "glucosesyrup", "glukosesirup", "sirop de glucose"],
+            ["phenoxyethanol"],
+            ["parfum", "fragrance", "aroma"],
+            ["maltodextrin", "maltodextrine"],
+            ["sucralose"],
+            ["carrageenan", "carrageen", "e407"],
+            ["alcohol denat", "alcoholdenat"],
+            ["limonene"],
+            ["linalool"]
+        ]
+        for group in groups.map({ $0.map(normalizedSupabaseKey) }) where group.contains(normalizedQuery) {
+            if group.contains(where: { normalizedText.contains($0) }) {
+                return true
+            }
+        }
+        return false
+    }
+
     func defaultSummary(for status: IngredientStatus) -> String {
         switch status {
         case .clean:
@@ -531,6 +598,19 @@ private extension SupabaseManager {
             return "More information or human review may be needed."
         case .insufficientData:
             return "Ingredient data needed before INGRIA can screen this product."
+        }
+    }
+
+    func adminStatusForApproved(result: IngredientStatus) -> String {
+        switch result {
+        case .clean:
+            return "approved_clean"
+        case .avoid:
+            return "approved_avoid"
+        case .watch, .neutral:
+            return "approved_review"
+        case .insufficientData:
+            return "needs_more_info"
         }
     }
 
@@ -657,7 +737,8 @@ private struct ProductRow: Codable {
 
     var isTrusted: Bool {
         let review = ProductReviewStatus(supabaseValue: reviewStatus)
-        return review == .approved || review == .adminReviewed || adminReviewStatus == "approved"
+        let adminStatus = normalizedSupabaseKey(adminReviewStatus ?? "")
+        return review == .approved || review == .adminReviewed || adminStatus == "approved" || adminStatus.hasPrefix("approved")
     }
 }
 
@@ -914,4 +995,19 @@ private func normalizedSupabaseKey(_ value: String) -> String {
         .replacingOccurrences(of: #"[^a-z0-9]+"#, with: " ", options: .regularExpression)
         .replacingOccurrences(of: #"\s+"#, with: " ", options: .regularExpression)
         .trimmingCharacters(in: .whitespacesAndNewlines)
+}
+
+private extension UIImage {
+    func resizedForSubmission(maxDimension: CGFloat) -> UIImage {
+        let longest = max(size.width, size.height)
+        guard longest > maxDimension else { return self }
+        let scale = maxDimension / longest
+        let targetSize = CGSize(width: size.width * scale, height: size.height * scale)
+        let renderer = UIGraphicsImageRenderer(size: targetSize)
+        return renderer.image { _ in
+            UIColor.white.setFill()
+            UIBezierPath(rect: CGRect(origin: .zero, size: targetSize)).fill()
+            draw(in: CGRect(origin: .zero, size: targetSize))
+        }
+    }
 }

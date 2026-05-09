@@ -79,6 +79,7 @@ final class IngriaViewModel: ObservableObject {
 
         isSearching = true
         searchStateText = localized(de: "Suche...", en: "Searching...")
+        let intent = ProductSearchIntent.detect(value)
         do {
             async let supabaseMatches = supabaseManager.searchProducts(
                 query: value,
@@ -90,17 +91,22 @@ final class IngriaViewModel: ObservableObject {
                     ingredientConcern: ingredientConcernFilter,
                     onlineOnly: onlineOnly,
                     availableNearby: availableNearbyOnly
-                )
+                ),
+                intent: intent
             )
             async let publicMatches = searchService.search(query: value)
             let reviewedMatches = (try? await supabaseMatches) ?? []
             let merged = try await mergeSearchResults(reviewedMatches, publicMatches)
             searchResults = applyLocalSearchFilters(merged)
-            searchStateText = searchResults.isEmpty ? localized(de: "Nichts gefunden.", en: "Nothing found.") : localized(de: "\(searchResults.count) Treffer", en: "\(searchResults.count) matches")
+            searchStateText = searchResults.isEmpty
+                ? emptySearchStateText(intent: intent)
+                : localized(de: "\(searchResults.count) Treffer", en: "\(searchResults.count) matches")
         } catch {
             do {
                 searchResults = applyLocalSearchFilters(try await searchService.search(query: value))
-                searchStateText = searchResults.isEmpty ? localized(de: "Nichts gefunden.", en: "Nothing found.") : localized(de: "\(searchResults.count) Treffer", en: "\(searchResults.count) matches")
+                searchStateText = searchResults.isEmpty
+                    ? emptySearchStateText(intent: intent)
+                    : localized(de: "\(searchResults.count) Treffer", en: "\(searchResults.count) matches")
             } catch {
                 searchResults = []
                 searchStateText = localized(de: "Suche fehlgeschlagen.", en: "Search failed.")
@@ -493,6 +499,23 @@ final class IngriaViewModel: ObservableObject {
 
     private func localized(de: String, en: String) -> String {
         appLanguage == .german ? de : en
+    }
+
+    private func emptySearchStateText(intent: ProductSearchIntent) -> String {
+        switch intent {
+        case .ingredient:
+            return localized(
+                de: "Noch keine Produkte mit dieser Zutat gefunden.",
+                en: "No products found with this ingredient yet."
+            )
+        case .barcode:
+            return localized(
+                de: "Kein Produkt mit diesem Barcode gefunden.",
+                en: "No product found for this barcode."
+            )
+        case .product:
+            return localized(de: "Nichts gefunden.", en: "Nothing found.")
+        }
     }
 
     private func missingIngredientAudit(barcode: String, productName: String, brand: String, source: String) -> ProductAudit {

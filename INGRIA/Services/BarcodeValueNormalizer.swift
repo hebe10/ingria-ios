@@ -1,7 +1,7 @@
 import Foundation
 
 enum BarcodeValueNormalizer {
-    static func normalize(_ value: String) -> String {
+    nonisolated static func normalize(_ value: String) -> String {
         let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
         if let url = URL(string: trimmed), url.scheme != nil {
             let pathDigits = url.pathComponents
@@ -23,7 +23,7 @@ enum BarcodeValueNormalizer {
         return cleanGTIN(digitsOnly(trimmed))
     }
 
-    private static func cleanGTIN(_ value: String) -> String {
+    nonisolated private static func cleanGTIN(_ value: String) -> String {
         let digits = digitsOnly(value)
         if digits.count == 14, digits.hasPrefix("01") {
             return String(digits.dropFirst(2))
@@ -34,7 +34,7 @@ enum BarcodeValueNormalizer {
         return digits
     }
 
-    private static func digitsOnly(_ value: String) -> String {
+    nonisolated private static func digitsOnly(_ value: String) -> String {
         value.filter(\.isNumber)
     }
 }
