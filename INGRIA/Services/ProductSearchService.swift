@@ -352,11 +352,10 @@ struct ProductSearchService {
         limit: Int,
         index: [IndexedLocalGermanProduct]
     ) -> [ProductSearchItem] {
-        let normalizedQuery = normalizeValue(query)
+        let normalizedQuery = Self.normalizeValue(query)
         guard normalizedQuery.count >= 2 else { return [] }
         let matches = index.compactMap { indexed -> (ProductSearchItem, Int)? in
-            let matchesIngredient = containsIngredient(indexed.ingredients, query: query)
-            let matchesName = indexed.name.contains(normalizedQuery)
+            let matchesIngredient = Self.containsIngredient(indexed.ingredients, query: query)
             let matchesBrand = indexed.brand.contains(normalizedQuery)
             let matchesBarcode = indexed.product.code == BarcodeValueNormalizer.normalize(query)
             if intent == .ingredient {
@@ -395,8 +394,8 @@ struct ProductSearchService {
             .map(\.0)
     }
 
-    private func normalize(_ value: String) -> String {
-        Self.normalizeValue(value)
+    nonisolated private static func normalize(_ value: String) -> String {
+        normalizeValue(value)
     }
 
     nonisolated private static func normalizeValue(_ value: String) -> String {
@@ -565,7 +564,7 @@ struct ProductSearchService {
         ]
 
         for group in synonymGroups {
-            let normalizedGroup = group.map(normalizeValue)
+            let normalizedGroup = group.map(Self.normalizeValue)
             if normalizedGroup.contains(normalizedQuery) {
                 variants.formUnion(normalizedGroup)
             }
@@ -583,10 +582,10 @@ struct ProductSearchService {
 
     nonisolated private static let localGermanProductIndex: [IndexedLocalGermanProduct] = {
         localGermanProducts.map { product in
-            let name = normalizeValue(product.name)
-            let brand = normalizeValue(product.brand)
-            let stores = normalizeValue(product.stores ?? "")
-            let ingredients = normalizeValue(product.ingredients_text ?? "")
+            let name = Self.normalizeValue(product.name)
+            let brand = Self.normalizeValue(product.brand)
+            let stores = Self.normalizeValue(product.stores ?? "")
+            let ingredients = Self.normalizeValue(product.ingredients_text ?? "")
             return IndexedLocalGermanProduct(
                 product: product,
                 name: name,
